@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 
 import Header from './components/Header';
-import CurrentTable from './components/CurrentTable';
-import DailyTable from './components/DailyTable';
+import CurrentWeather from './components/CurrentWeather';
+import DailyWeather from './components/DailyWeather';
 
 import UnitsContext from './context/units';
 import useSwitchUnits from './hooks/useSwitchUnits';
@@ -14,8 +14,8 @@ const App = () => {
     <div className="App">
       <UnitsContext.Provider value={{ units, switchUnits }}>
         <Header />
-        <CurrentTable />
-        <DailyTable />
+        <CurrentWeather />
+        <DailyWeather />
       </UnitsContext.Provider>
     </div>
   );

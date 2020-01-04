@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const DailyTable = () => {
+export const DailyWeather = () => {
   return <div></div>;
 };

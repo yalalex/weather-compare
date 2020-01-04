@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const CurrentTable = () => {
+export const CurrentWeather = () => {
   return <div></div>;
 };
