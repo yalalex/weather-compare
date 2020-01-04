@@ -21,11 +21,11 @@ exports.getCurrent = schedule.scheduleJob('*/5 * * * *', async function() {
       const current = {
         name: city.name,
         icon: weather[0].icon,
+        conditions: weather[0].main,
         temp,
         humidity,
         wind: wind.speed,
         pressure
-        // weather: weather[0].main,
         // sky: weather[0].description,
         // dt,
         // offset

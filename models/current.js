@@ -9,6 +9,10 @@ const CurrentSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  conditions: {
+    type: String,
+    required: true
+  },
   temp: {
     type: String,
     required: true
