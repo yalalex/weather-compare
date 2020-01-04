@@ -17,10 +17,10 @@ const CurrentSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  minMaxT: {
-    type: String,
-    required: true
-  },
+  // minMaxT: {
+  //   type: String,
+  //   required: true
+  // },
   humidity: {
     type: String,
     required: true
