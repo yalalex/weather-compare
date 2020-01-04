@@ -17,18 +17,18 @@ exports.getCurrent = schedule.scheduleJob('*/5 * * * *', async function() {
       );
       const { timezone, dt, main, wind, weather } = res.data,
         { temp, pressure, humidity } = main;
-      const offset = new Date().getTimezoneOffset() * 60 + timezone;
+      // const offset = new Date().getTimezoneOffset() * 60 + timezone;
       const current = {
         name: city.name,
-        dt,
-        temp,
-        wind: wind.speed,
-        pressure,
-        humidity,
-        weather: weather[0].main,
-        sky: weather[0].description,
         icon: weather[0].icon,
-        offset
+        temp,
+        humidity,
+        wind: wind.speed,
+        pressure
+        // weather: weather[0].main,
+        // sky: weather[0].description,
+        // dt,
+        // offset
       };
       if (current.temp.toFixed() === '-0') current.temp = 0;
       await Current.findOneAndUpdate(

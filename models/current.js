@@ -9,7 +9,7 @@ const CurrentSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  currentT: {
+  temp: {
     type: String,
     required: true
   },
