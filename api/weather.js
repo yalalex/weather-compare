@@ -1,6 +1,6 @@
 const schedule = require('node-schedule');
 const axios = require('axios');
-const cities = require('./lists/cities');
+const cities = require('./cities');
 
 const Current = require('../models/Current');
 const Daily = require('../models/Daily');
@@ -42,7 +42,7 @@ exports.getCurrent = schedule.scheduleJob('*/5 * * * *', async function() {
   });
 });
 
-exports.getDaily = schedule.scheduleJob('* 1 * * *', async function() {
+exports.getDaily = schedule.scheduleJob('* 12 * * *', async function() {
   cities.map(async city => {
     try {
       const res = await axios.get(
