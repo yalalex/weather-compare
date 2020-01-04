@@ -4,6 +4,7 @@ const cities = require('./lists/cities');
 
 const Current = require('../models/Current');
 const Daily = require('../models/Daily');
+const Archive = require('../models/Archive');
 
 const openWeatherMapKey = config.get('openWeatherMapKey');
 const weatherBitKey = config.get('weatherBitKey');
@@ -48,10 +49,16 @@ exports.getDaily = schedule.scheduleJob('* 1 * * *', async function() {
         `https://api.weatherbit.io/v2.0/forecast/daily?lat=${city.lat}&lon=${city.lon}&units=M&key=${weatherBitKey}`
       );
       const forecast = res.data.data.map(day => {
+        if (day.temp.toFixed() === '-0') day.temp = 0;
         if (day.max_temp.toFixed() === '-0') day.max_temp = 0;
         if (day.min_temp.toFixed() === '-0') day.min_temp = 0;
         return day;
       });
+      const newArchive = new Archive({
+        name: city.name,
+        temp: forecast[0].temp
+      });
+      await newArchive.save();
       const daily = {
         name: city.name,
         data: forecast
