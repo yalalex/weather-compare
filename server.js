@@ -7,7 +7,25 @@ connectDB();
 
 app.get('/', (req, res) => res.json({ msg: 'Welcome to Weather Compare' }));
 
-app.get('/api/current', (req, res) => {});
+app.get('/api/current', async (req, res) => {
+  try {
+    const current = await Current.find();
+    res.json(current);
+  } catch (err) {
+    console.error(err.message);
+    res.status.send('Server Error');
+  }
+});
+
+// app.get('/api/daily', (req, res) => {
+//     try {
+//         const daily = await Daily.find();
+//         res.json(daily);
+//       } catch (err) {
+//         console.error(err.message);
+//         res.status.send('Server Error');
+//       }
+// });
 
 const PORT = process.env.PORT || 5000;
 

@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const CurrentSchema = mongoose.Schema({
-  city: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'current'
-  },
+  // city: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'current'
+  // },
   name: {
     type: String,
     required: true
