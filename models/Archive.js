@@ -5,7 +5,11 @@ const ArchiveSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  temp: {
+  max: {
+    type: Number,
+    required: true
+  },
+  min: {
     type: Number,
     required: true
   },

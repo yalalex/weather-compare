@@ -29,10 +29,6 @@ exports.getCurrent = async function() {
         temp,
         humidity,
         wind: wind.speed
-        // pressure
-        // sky: weather[0].description,
-        // dt,
-        // offset
       };
       if (current.temp.toFixed() === '-0') current.temp = 0;
       await Current.findOneAndUpdate(
@@ -40,6 +36,21 @@ exports.getCurrent = async function() {
         { $set: current },
         { new: true }
       );
+      // const newCurrent = new Current({
+      //   name: city.name,
+      //   time,
+      //   icon: weather[0].icon,
+      //   conditions: weather[0].main,
+      //   temp,
+      //   humidity,
+      //   wind: wind.speed
+      //   // pressure
+      //   // sky: weather[0].description,
+      //   // dt,
+      //   // offset
+      // });
+      // if (newCurrent.temp.toFixed() === '-0') newCurrent.temp = 0;
+      // await newCurrent.save();
     } catch (error) {
       console.error(error.message);
     }
@@ -52,15 +63,16 @@ exports.getDaily = async function() {
       const res = await axios.get(
         `https://api.weatherbit.io/v2.0/forecast/daily?lat=${city.lat}&lon=${city.lon}&units=M&key=${weatherBitKey}`
       );
-      const forecast = res.data.data.map(day => {
-        if (day.temp.toFixed() === '-0') day.temp = 0;
+      const forecast7days = res.data.data.slice(0, 7);
+      const forecast = forecast7days.map(day => {
         if (day.max_temp.toFixed() === '-0') day.max_temp = 0;
         if (day.min_temp.toFixed() === '-0') day.min_temp = 0;
         return day;
       });
       const newArchive = new Archive({
         name: city.name,
-        temp: forecast[0].temp
+        max: forecast[0].max_temp,
+        min: forecast[0].min_temp
       });
       await newArchive.save();
       const daily = {
@@ -72,6 +84,11 @@ exports.getDaily = async function() {
         { $set: daily },
         { new: true }
       );
+      // const newDaily = new Daily({
+      //   name: city.name,
+      //   data: forecast
+      // });
+      // await newDaily.save();
     } catch (error) {
       console.error(error.message);
     }
