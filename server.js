@@ -4,6 +4,7 @@ const { getCurrent, getDaily } = require('./api/weather');
 
 const Current = require('./models/Current');
 const Daily = require('./models/Daily');
+const Archive = require('./models/Archive');
 
 const app = express();
 
@@ -24,24 +25,24 @@ app.get('/api/current', async (req, res) => {
   }
 });
 
-app.get('/api/daily', (req, res) => {
-    try {
-        const daily = await Daily.find();
-        res.json(daily);
-      } catch (err) {
-        console.error(err.message);
-        res.status.send('Server Error');
-      }
+app.get('/api/daily', async (req, res) => {
+  try {
+    const daily = await Daily.find();
+    res.json(daily);
+  } catch (err) {
+    console.error(err.message);
+    res.status.send('Server Error');
+  }
 });
 
-app.get('/api/archive/:city', (req, res) => {
+app.get('/api/archive/:city', async (req, res) => {
   try {
-      const archive = await Archive.find({ name: req.params.city });
-      res.json(archive);
-    } catch (err) {
-      console.error(err.message);
-      res.status.send('Server Error');
-    }
+    const archive = await Archive.find({ name: req.params.city });
+    res.json(archive);
+  } catch (err) {
+    console.error(err.message);
+    res.status.send('Server Error');
+  }
 });
 
 const PORT = process.env.PORT || 5000;
