@@ -16,16 +16,18 @@ exports.getCurrent = schedule.scheduleJob('*/5 * * * *', async function() {
         `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&units=metric&APPID=${openWeatherMapKey}`
       );
       const { timezone, dt, main, wind, weather } = res.data,
-        { temp, pressure, humidity } = main;
-      // const offset = new Date().getTimezoneOffset() * 60 + timezone;
+        { temp, humidity } = main;
+      const offset = new Date().getTimezoneOffset() * 60 + timezone;
+      const time = offset + dt;
       const current = {
         name: city.name,
         icon: weather[0].icon,
+        time,
         conditions: weather[0].main,
         temp,
         humidity,
-        wind: wind.speed,
-        pressure
+        wind: wind.speed
+        // pressure
         // sky: weather[0].description,
         // dt,
         // offset
