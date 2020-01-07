@@ -34,6 +34,16 @@ app.get('/api/daily', (req, res) => {
       }
 });
 
+app.get('/api/archive/:city', (req, res) => {
+  try {
+      const archive = await Archive.find({ name: req.params.city });
+      res.json(archive);
+    } catch (err) {
+      console.error(err.message);
+      res.status.send('Server Error');
+    }
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
