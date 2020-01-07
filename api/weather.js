@@ -21,8 +21,8 @@ exports.getCurrent = schedule.scheduleJob('*/5 * * * *', async function() {
       const time = offset + dt;
       const current = {
         name: city.name,
-        icon: weather[0].icon,
         time,
+        icon: weather[0].icon,
         conditions: weather[0].main,
         temp,
         humidity,

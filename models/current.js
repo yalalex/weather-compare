@@ -5,6 +5,10 @@ const CurrentSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  time: {
+    type: Date,
+    required: true
+  },
   icon: {
     type: String,
     required: true
@@ -22,10 +26,6 @@ const CurrentSchema = mongoose.Schema({
     required: true
   },
   wind: {
-    type: String,
-    required: true
-  },
-  pressure: {
     type: String,
     required: true
   }
