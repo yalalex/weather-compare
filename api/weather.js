@@ -28,7 +28,7 @@ exports.getCurrent = async function() {
         conditions: weather[0].main,
         temp,
         humidity,
-        wind: wind.speed
+        wind
       };
       if (current.temp.toFixed() === '-0') current.temp = 0;
       await Current.findOneAndUpdate(
@@ -43,7 +43,7 @@ exports.getCurrent = async function() {
       //   conditions: weather[0].main,
       //   temp,
       //   humidity,
-      //   wind: wind.speed
+      //   wind
       //   // pressure
       //   // sky: weather[0].description,
       //   // dt,
@@ -64,15 +64,20 @@ exports.getDaily = async function() {
         `https://api.weatherbit.io/v2.0/forecast/daily?lat=${city.lat}&lon=${city.lon}&units=M&key=${weatherBitKey}`
       );
       const forecast7days = res.data.data.slice(0, 7);
-      const forecast = forecast7days.map(day => {
+      const forecast = [];
+      forecast7days.map(day => {
         if (day.max_temp.toFixed() === '-0') day.max_temp = 0;
         if (day.min_temp.toFixed() === '-0') day.min_temp = 0;
-        return day;
+        return forecast.push({
+          icon: day.weather.icon,
+          max: day.max_temp,
+          min: day.min_temp
+        });
       });
       const newArchive = new Archive({
         name: city.name,
-        max: forecast[0].max_temp,
-        min: forecast[0].min_temp
+        max: forecast[0].max,
+        min: forecast[0].min
       });
       await newArchive.save();
       const daily = {

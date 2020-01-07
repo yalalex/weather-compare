@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import MaterialTable from 'material-table';
 
-export const CurrentWeather = () => {
+const CurrentWeather = ({ units }) => {
   return (
     <Fragment>
       <MaterialTable
@@ -28,3 +28,5 @@ export const CurrentWeather = () => {
     </Fragment>
   );
 };
+
+export default CurrentWeather;

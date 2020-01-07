@@ -26,7 +26,7 @@ const CurrentSchema = mongoose.Schema({
     required: true
   },
   wind: {
-    type: Number,
+    type: Object,
     required: true
   }
 });
