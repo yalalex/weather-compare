@@ -6,7 +6,7 @@ const DailySchema = mongoose.Schema({
     required: true
   },
   data: {
-    type: array,
+    type: Array,
     required: true
   }
 });

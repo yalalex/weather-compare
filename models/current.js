@@ -18,15 +18,15 @@ const CurrentSchema = mongoose.Schema({
     required: true
   },
   temp: {
-    type: String,
+    type: Number,
     required: true
   },
   humidity: {
-    type: String,
+    type: Number,
     required: true
   },
   wind: {
-    type: String,
+    type: Number,
     required: true
   }
 });
