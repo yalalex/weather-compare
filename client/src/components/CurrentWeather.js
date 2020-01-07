@@ -5,7 +5,7 @@ export const CurrentWeather = () => {
   return (
     <Fragment>
       <MaterialTable
-        title="Current Weather"
+        title='Current Weather'
         columns={[
           { title: 'City', field: 'name' },
           { title: 'Conditions', field: 'conditions' },
@@ -22,7 +22,7 @@ export const CurrentWeather = () => {
           pageSize: rows
         }}
         detailPanel={rowData => {
-          return <iframe width="100%" height="315" src="" frameborder="0" />;
+          return <iframe width='100%' height='315' src='' frameborder='0' />;
         }}
       />
     </Fragment>

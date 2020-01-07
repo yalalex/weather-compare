@@ -1,6 +1,6 @@
-const schedule = require('node-schedule');
 const axios = require('axios');
-const cities = require('./cities');
+const list = require('./cities');
+const config = require('config');
 
 const Current = require('../models/Current');
 const Daily = require('../models/Daily');
@@ -9,7 +9,9 @@ const Archive = require('../models/Archive');
 const openWeatherMapKey = config.get('openWeatherMapKey');
 const weatherBitKey = config.get('weatherBitKey');
 
-exports.getCurrent = schedule.scheduleJob('*/5 * * * *', async function() {
+const cities = list.cities;
+
+exports.getCurrent = async function() {
   cities.map(async city => {
     try {
       const res = await axios.get(
@@ -42,9 +44,9 @@ exports.getCurrent = schedule.scheduleJob('*/5 * * * *', async function() {
       console.error(error.message);
     }
   });
-});
+};
 
-exports.getDaily = schedule.scheduleJob('* 12 * * *', async function() {
+exports.getDaily = async function() {
   cities.map(async city => {
     try {
       const res = await axios.get(
@@ -74,4 +76,4 @@ exports.getDaily = schedule.scheduleJob('* 12 * * *', async function() {
       console.error(error.message);
     }
   });
-});
+};

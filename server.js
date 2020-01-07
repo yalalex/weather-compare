@@ -1,5 +1,6 @@
-const express = require('');
+const express = require('express');
 const connectDB = require('./config/db');
+const schedule = require('node-schedule');
 const { getCurrent, getDaily } = require('./api/weather');
 
 const Current = require('./models/Current');
@@ -10,8 +11,8 @@ const app = express();
 
 connectDB();
 
-getCurrent();
-getDaily();
+schedule.scheduleJob('*/5 * * * *', getCurrent());
+schedule.scheduleJob('* 12 * * *', getDaily());
 
 app.get('/', (req, res) => res.json({ msg: 'Welcome to Weather Compare' }));
 
