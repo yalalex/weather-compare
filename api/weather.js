@@ -74,12 +74,27 @@ exports.getDaily = async function() {
           min: day.min_temp
         });
       });
-      const newArchive = new Archive({
-        name: city.name,
-        max: forecast[0].max,
-        min: forecast[0].min
-      });
-      await newArchive.save();
+      await Archive.findOneAndUpdate(
+        { name: city.name },
+        {
+          $push: {
+            data: {
+              max: forecast[0].max,
+              min: forecast[0].min,
+              date: Date.now
+            }
+          }
+        }
+      );
+      // const newArchive = new Archive(
+      //   { name: city.name },
+      //   { $push: { data: {
+      //     max: forecast[0].max,
+      //     min: forecast[0].min,
+      //     date: Date.now
+      //   }}}
+      // );
+      // await newArchive.save();
       const daily = {
         name: city.name,
         data: forecast

@@ -5,18 +5,22 @@ const ArchiveSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  max: {
-    type: Number,
+  data: {
+    type: Array,
     required: true
-  },
-  min: {
-    type: Number,
-    required: true
-  },
-  date: {
-    type: Date,
-    default: Date.now
   }
+  // max: {
+  //   type: Number,
+  //   required: true
+  // },
+  // min: {
+  //   type: Number,
+  //   required: true
+  // },
+  // date: {
+  //   type: Date,
+  //   default: Date.now
+  // }
 });
 
 module.exports = mongoose.model('archive', ArchiveSchema);
