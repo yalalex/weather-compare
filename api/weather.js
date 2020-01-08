@@ -17,15 +17,12 @@ exports.getCurrent = async function() {
       const res = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&units=metric&APPID=${openWeatherMapKey}`
       );
-      const { timezone, dt, main, wind, weather } = res.data,
+      const { main, wind, weather } = res.data,
         { temp, humidity } = main;
-      const offset = new Date().getTimezoneOffset() * 60 + timezone;
-      const time = offset + dt;
       const current = {
         name: city.name,
-        time,
+        time: Date.now(),
         icon: weather[0].icon,
-        conditions: weather[0].main,
         temp,
         humidity,
         wind
@@ -38,16 +35,11 @@ exports.getCurrent = async function() {
       );
       // const newCurrent = new Current({
       //   name: city.name,
-      //   time,
+      //   time: Date.now(),
       //   icon: weather[0].icon,
-      //   conditions: weather[0].main,
       //   temp,
       //   humidity,
       //   wind
-      //   // pressure
-      //   // sky: weather[0].description,
-      //   // dt,
-      //   // offset
       // });
       // if (newCurrent.temp.toFixed() === '-0') newCurrent.temp = 0;
       // await newCurrent.save();
