@@ -78,14 +78,16 @@ exports.getDaily = async function() {
           }
         }
       );
-      // const newArchive = new Archive(
-      //   { name: city.name },
-      //   { $push: { data: {
-      //     max: forecast[0].max,
-      //     min: forecast[0].min,
-      //     date: Date.now
-      //   }}}
-      // );
+      // const newArchive = new Archive({
+      //   name: city.name,
+      //   data: [
+      //     {
+      //       max: forecast[0].max,
+      //       min: forecast[0].min,
+      //       date: Date.now()
+      //     }
+      //   ]
+      // });
       // await newArchive.save();
       const daily = {
         name: city.name,
