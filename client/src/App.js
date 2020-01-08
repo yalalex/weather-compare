@@ -2,10 +2,9 @@ import React from 'react';
 import './App.css';
 
 import Header from './components/Header';
-// import CurrentWeather from './components/CurrentWeather';
-// import DailyWeather from './components/DailyWeather';
-
-// import UnitsContext from './context/units';
+import Map from './components/Map';
+import Current from './components/Current';
+import Daily from './components/Daily';
 import useSwitchUnits from './hooks/useSwitchUnits';
 
 const App = () => {
@@ -13,12 +12,10 @@ const App = () => {
   const { switchTemp, convertTemp } = switchUnits;
   return (
     <div className="App">
-      {/* <UnitsContext.Provider value={{ units, switchUnits }}> */}
       <Header units={units} switchTemp={switchTemp} />
-      {/* <Map /> */}
-      <CurrentWeather units={units} convertTemp={convertTemp} />
-      <DailyWeather units={units} convertTemp={convertTemp} />
-      {/* </UnitsContext.Provider> */}
+      <Map />
+      <Current units={units} convertTemp={convertTemp} />
+      <Daily units={units} convertTemp={convertTemp} />
     </div>
   );
 };

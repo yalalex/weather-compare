@@ -1,18 +1,18 @@
 import React, { Fragment } from 'react';
 import MaterialTable from 'material-table';
 
-const CurrentWeather = ({ units }) => {
+const CurrentWeather = ({ units, convertTemp }) => {
   return (
     <Fragment>
       <MaterialTable
-        title='Current Weather'
+        title="Current Weather"
         columns={[
           { title: 'City', field: 'name' },
+          { title: 'Local Time', field: 'time' },
           { title: 'Conditions', field: 'conditions' },
           { title: 'Temperature', field: 'temp' },
           { title: 'Humidity', field: 'humidity' },
-          { title: 'Wind', field: 'wind' },
-          { title: 'Pressure', field: 'pressure' }
+          { title: 'Wind', field: 'wind' }
         ]}
         data={current}
         options={{
@@ -22,7 +22,7 @@ const CurrentWeather = ({ units }) => {
           pageSize: rows
         }}
         detailPanel={rowData => {
-          return <iframe width='100%' height='315' src='' frameborder='0' />;
+          return <iframe width="100%" height="315" src="" frameborder="0" />;
         }}
       />
     </Fragment>
