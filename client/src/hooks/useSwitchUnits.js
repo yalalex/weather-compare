@@ -6,8 +6,7 @@ const useSwitchUnits = un => {
     units === 'metric' ? setUnits('imperial') : setUnits('metric');
   };
   const convertTemp = temp => {
-    if (units === 'metric') return temp;
-    else return (temp * 9) / 5 + 32;
+    return units === 'metric' ? temp : (temp * 9) / 5 + 32;
   };
   return [units, { switchTemp, convertTemp }];
 };

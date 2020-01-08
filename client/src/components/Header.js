@@ -40,7 +40,7 @@ import Typography from '@material-ui/core/Typography';
 //   checked: {}
 // }))(Switch);
 
-const Header = ({ units, switchUnits }) => {
+const Header = ({ units, switchTemp }) => {
   // const [state, setState] = useState({
   //   checked: true
   // });
@@ -67,7 +67,7 @@ const Header = ({ units, switchUnits }) => {
             </Grid>
             <Grid item>On</Grid>
           </Grid> */}
-          <span onClick={switchUnits}>{units === 'metric' ? '°F' : '°C'}</span>
+          <span onClick={switchTemp}>{units === 'metric' ? '°F' : '°C'}</span>
         </Typography>
       </Toolbar>
     </AppBar>
