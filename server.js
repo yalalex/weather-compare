@@ -14,9 +14,10 @@ connectDB();
 schedule.scheduleJob('*/5 * * * *', function() {
   getCurrent();
 });
-schedule.scheduleJob('* 12 * * *', function() {
+schedule.scheduleJob('0 */12 * * *', function() {
   getDaily();
 });
+// schedule.scheduleJob('* 12 * * *', getDaily());
 
 app.get('/', (req, res) => res.json({ msg: 'Welcome to Weather Compare' }));
 
