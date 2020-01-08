@@ -81,7 +81,7 @@ exports.getDaily = async function() {
             data: {
               max: forecast[0].max,
               min: forecast[0].min,
-              date: new Date()
+              date: Date.now()
             }
           }
         }
