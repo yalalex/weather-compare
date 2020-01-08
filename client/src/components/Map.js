@@ -14,7 +14,7 @@ const Map = () => {
           width="100%"
           height="100%"
         >
-          {cities.map(city, i => (
+          {cities.map((city, i) => (
             <Placemark key={i} defaultGeometry={[city.lat, city.lon]} />
           ))}
         </Map>
