@@ -11,8 +11,12 @@ const app = express();
 
 connectDB();
 
-schedule.scheduleJob('*/5 * * * *', getCurrent());
-schedule.scheduleJob('* 12 * * *', getDaily());
+schedule.scheduleJob('*/5 * * * *', function() {
+  getCurrent();
+});
+schedule.scheduleJob('* 12 * * *', function() {
+  getDaily();
+});
 
 app.get('/', (req, res) => res.json({ msg: 'Welcome to Weather Compare' }));
 
