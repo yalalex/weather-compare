@@ -1,6 +1,6 @@
 import React from 'react';
 import { YMaps, Map, Placemark } from 'react-yandex-maps';
-import cities from '../lists/cities';
+import { cities } from '../lists/cities';
 
 const WorldMap = () => {
   return (
