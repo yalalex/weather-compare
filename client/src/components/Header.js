@@ -1,76 +1,32 @@
 import React from 'react';
-// import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-// import Switch from '@material-ui/core/Switch';
-// import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-
-// const AntSwitch = withStyles(theme => ({
-//   root: {
-//     width: 28,
-//     height: 16,
-//     padding: 0,
-//     display: 'flex'
-//   },
-//   switchBase: {
-//     padding: 2,
-//     color: theme.palette.grey[500],
-//     '&$checked': {
-//       transform: 'translateX(12px)',
-//       color: theme.palette.common.white,
-//       '& + $track': {
-//         opacity: 1,
-//         backgroundColor: theme.palette.primary.main,
-//         borderColor: theme.palette.primary.main
-//       }
-//     }
-//   },
-//   thumb: {
-//     width: 12,
-//     height: 12,
-//     boxShadow: 'none'
-//   },
-//   track: {
-//     border: `1px solid ${theme.palette.grey[500]}`,
-//     borderRadius: 16 / 2,
-//     opacity: 1,
-//     backgroundColor: theme.palette.common.white
-//   },
-//   checked: {}
-// }))(Switch);
 
 const Header = ({ units, switchTemp }) => {
-  // const [state, setState] = useState({
-  //   checked: true
-  // });
-
-  // const handleChange = name => event => {
-  //   setState({ ...state, [name]: event.target.checked });
-  // };
-
   return (
-    <AppBar position='static'>
-      <Toolbar>
-        {/* <Typography variant='h6' className={classes.title}>
-          Weather Compare
-        </Typography> */}
-        <Typography component='div'>
-          {/* <Grid component="label" container alignItems="center" spacing={1}>
-            <Grid item>Off</Grid>
-            <Grid item>
-              <AntSwitch
-                checked={state.checked}
-                onChange={handleChange('checked')}
-                value="checkedC"
-              />
-            </Grid>
-            <Grid item>On</Grid>
-          </Grid> */}
-          <span onClick={switchTemp}>{units === 'metric' ? '°F' : '°C'}</span>
-        </Typography>
-      </Toolbar>
-    </AppBar>
+    <nav id='top'>
+        <ul id='nav-mobile' className='right'>
+          <li>
+            <div
+              className='switch'
+              style={{ marginLeft: '1rem', marginRight: '1rem' }}
+            >
+              <span className={units === 'metric' ? 'white-text' : 'grey-text'}>
+              °C
+              </span>
+              <label style={{ cursor: 'default' }}>
+                <input type='checkbox' />
+                <span
+                  onClick={switchTemp}
+                  className='lever'
+                  style={{ cursor: 'pointer' }}
+                ></span>
+              </label>
+              <span className={units === 'imperial' ? 'white-text' : 'grey-text'}>
+              °F
+              </span>
+            </div>
+          </li>
+        </ul>
+    </nav>
   );
 };
 
