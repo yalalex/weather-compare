@@ -21,9 +21,11 @@ const App = () => {
   return (
     <div className='App'>
       <Header units={units} switchTemp={switchTemp} />
-      <WorldMap />
-      {/* <Current units={units} convertTemp={convertTemp} />
+      <div className='container'>
+        <WorldMap />
+        {/* <Current units={units} convertTemp={convertTemp} />
       <Daily units={units} convertTemp={convertTemp} /> */}
+      </div>
     </div>
   );
 };
