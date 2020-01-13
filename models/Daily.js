@@ -8,6 +8,10 @@ const DailySchema = mongoose.Schema({
   data: {
     type: Array,
     required: true
+  },
+  date: {
+    type: Number,
+    required: true
   }
 });
 

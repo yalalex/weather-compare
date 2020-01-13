@@ -50,6 +50,7 @@ exports.getCurrent = async function() {
 };
 
 exports.getDaily = async function() {
+  const date = Date.now();
   cities.map(async city => {
     try {
       const res = await axios.get(
@@ -58,12 +59,14 @@ exports.getDaily = async function() {
       const forecast7days = res.data.data.slice(0, 7);
       const forecast = [];
       forecast7days.map(day => {
+        if (day.temp.toFixed() === '-0') day.temp = 0;
         if (day.max_temp.toFixed() === '-0') day.max_temp = 0;
         if (day.min_temp.toFixed() === '-0') day.min_temp = 0;
         return forecast.push({
           icon: day.weather.icon,
-          max: day.max_temp,
-          min: day.min_temp
+          temp: day.temp.toFixed(),
+          max: day.max_temp.toFixed(),
+          min: day.min_temp.toFixed()
         });
       });
       await Archive.findOneAndUpdate(
@@ -71,9 +74,10 @@ exports.getDaily = async function() {
         {
           $push: {
             data: {
-              max: forecast[0].max,
-              min: forecast[0].min,
-              date: Date.now()
+              temp: day.temp.toFixed(),
+              max: day.max_temp.toFixed(),
+              min: day.min_temp.toFixed(),
+              date
             }
           }
         }
@@ -91,7 +95,8 @@ exports.getDaily = async function() {
       // await newArchive.save();
       const daily = {
         name: city.name,
-        data: forecast
+        data: forecast,
+        date
       };
       await Daily.findOneAndUpdate(
         { name: daily.name },
@@ -108,3 +113,28 @@ exports.getDaily = async function() {
     }
   });
 };
+
+// exports.setBase = async function() {
+//   cities.map(async city => {
+//     const newArchive = new Archive({
+//       name: city.name,
+//       data: []
+//     });
+//     await newArchive.save();
+//     const newDaily = new Daily({
+//       name: city.name,
+//       data: [],
+//       date: Date.now()
+//     });
+//     await newDaily.save();
+//     const newCurrent = new Current({
+//       name: city.name,
+//       time: Date.now(),
+//       icon: '0',
+//       temp: 0,
+//       humidity: 0,
+//       wind: {}
+//     });
+//     await newCurrent.save();
+//   });
+// };

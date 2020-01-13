@@ -8,7 +8,7 @@ const WorldMap = () => {
       <div className='map'>
         <Map
           defaultState={{
-            center: [0, 0],
+            center: [40, -45],
             zoom: 1
           }}
           width='100%'

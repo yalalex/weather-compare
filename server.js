@@ -7,16 +7,24 @@ const Current = require('./models/Current');
 const Daily = require('./models/Daily');
 const Archive = require('./models/Archive');
 
+const wakeUpDyno = require('./utils/wakeUpDyno');
+
 const app = express();
 
 connectDB();
 
 const currentRule = new schedule.RecurrenceRule();
 currentRule.minute = ['0', '10', '20', '30', '40', '50'];
-
 const dailyRule = new schedule.RecurrenceRule();
-dailyRule.hour = ['0', '12'];
-dailyRule.minute = ['0'];
+dailyRule.hour = '9';
+dailyRule.minute = '0';
+
+schedule.scheduleJob(currentRule, function() {
+  getCurrent();
+});
+schedule.scheduleJob(dailyRule, function() {
+  getDaily();
+});
 
 app.use(
   express.json({
@@ -66,10 +74,5 @@ if (process.env.NODE_ENV === 'production') {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  schedule.scheduleJob(currentRule, function() {
-    getCurrent();
-  });
-  schedule.scheduleJob(dailyRule, function() {
-    getDaily();
-  });
+  wakeUpDyno('http://weather-compare-app.herokuapp.com');
 });
