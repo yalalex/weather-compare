@@ -9,6 +9,10 @@ const CurrentSchema = mongoose.Schema({
     type: Number,
     required: true
   },
+  timezone: {
+    type: Number,
+    required: true
+  },
   icon: {
     type: String,
     required: true

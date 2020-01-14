@@ -59,7 +59,7 @@ exports.cities = [
   { name: 'Montreal', country: 'Canada', lat: '45.5', lon: '-73.57' },
   { name: 'Vancouver', country: 'Canada', lat: '49.28', lon: '-123.12' },
   { name: 'Chicago', country: 'United States', lat: '41.88', lon: '-87.63' },
-  { name: 'Houston', country: 'United States', lat: '29.76', lon: '-95.37' },
+  { name: 'Miami', country: 'United States', lat: '25.76', lon: '-80.19' },
   {
     name: 'Salt Lake City',
     country: 'United States',

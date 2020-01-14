@@ -14,10 +14,23 @@ const app = express();
 connectDB();
 
 const currentRule = new schedule.RecurrenceRule();
-currentRule.minute = ['0', '10', '20', '30', '40', '50'];
+currentRule.minute = '0';
 const dailyRule = new schedule.RecurrenceRule();
 dailyRule.hour = '9';
-dailyRule.minute = '0';
+dailyRule.minute = [
+  '0',
+  '5',
+  '10',
+  '15',
+  '20',
+  '25',
+  '30',
+  '35',
+  '40',
+  '45',
+  '50',
+  '55'
+];
 
 schedule.scheduleJob(currentRule, function() {
   getCurrent();

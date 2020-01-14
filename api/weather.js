@@ -17,11 +17,12 @@ exports.getCurrent = async function() {
       const res = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&units=metric&APPID=${openWeatherMapKey}`
       );
-      const { main, wind, weather } = res.data,
+      const { main, wind, weather, timezone } = res.data,
         { temp, humidity } = main;
       const current = {
         name: city.name,
         time: Date.now(),
+        timezone,
         icon: weather[0].icon,
         temp,
         humidity,
@@ -33,16 +34,6 @@ exports.getCurrent = async function() {
         { $set: current },
         { new: true }
       );
-      // const newCurrent = new Current({
-      //   name: city.name,
-      //   time: Date.now(),
-      //   icon: weather[0].icon,
-      //   temp,
-      //   humidity,
-      //   wind
-      // });
-      // if (newCurrent.temp.toFixed() === '-0') newCurrent.temp = 0;
-      // await newCurrent.save();
     } catch (error) {
       console.error(error.message);
     }
@@ -50,8 +41,11 @@ exports.getCurrent = async function() {
 };
 
 exports.getDaily = async function() {
+  const time = new Date();
+  const minutes = time.getMinutes();
+  const places = cities.slice(minutes, minutes + 5);
   const date = Date.now();
-  cities.map(async city => {
+  places.map(async city => {
     try {
       const res = await axios.get(
         `https://api.weatherbit.io/v2.0/forecast/daily?lat=${city.lat}&lon=${city.lon}&units=M&key=${weatherBitKey}`
@@ -64,50 +58,37 @@ exports.getDaily = async function() {
         if (day.min_temp.toFixed() === '-0') day.min_temp = 0;
         return forecast.push({
           icon: day.weather.icon,
-          temp: day.temp.toFixed(),
-          max: day.max_temp.toFixed(),
-          min: day.min_temp.toFixed()
+          temp: day.temp,
+          max: day.max_temp,
+          min: day.min_temp
         });
       });
+      const temp = forecast[0].temp.toFixed(),
+        max = forecast[0].max.toFixed(),
+        min = forecast[0].min.toFixed();
       await Archive.findOneAndUpdate(
         { name: city.name },
         {
           $push: {
             data: {
-              temp: day.temp.toFixed(),
-              max: day.max_temp.toFixed(),
-              min: day.min_temp.toFixed(),
+              temp,
+              max,
+              min,
               date
             }
           }
         }
       );
-      // const newArchive = new Archive({
-      //   name: city.name,
-      //   data: [
-      //     {
-      //       max: forecast[0].max,
-      //       min: forecast[0].min,
-      //       date: Date.now()
-      //     }
-      //   ]
-      // });
-      // await newArchive.save();
       const daily = {
         name: city.name,
         data: forecast,
         date
       };
       await Daily.findOneAndUpdate(
-        { name: daily.name },
+        { name: city.name },
         { $set: daily },
         { new: true }
       );
-      // const newDaily = new Daily({
-      //   name: city.name,
-      //   data: forecast
-      // });
-      // await newDaily.save();
     } catch (error) {
       console.error(error.message);
     }
@@ -130,6 +111,7 @@ exports.getDaily = async function() {
 //     const newCurrent = new Current({
 //       name: city.name,
 //       time: Date.now(),
+//       timezone,
 //       icon: '0',
 //       temp: 0,
 //       humidity: 0,
