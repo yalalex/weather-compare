@@ -1,8 +1,12 @@
-import React, { Fragment } from 'react';
+import React, { useContext } from 'react';
 import MaterialTable from 'material-table';
-import Moment from 'react-moment';
+import wContext from '../context/wContext';
+// import Moment from 'react-moment';
 
-const Current = ({ units, convertTemp, current }) => {
+const Current = () => {
+  const WContext = useContext(wContext);
+  const { current } = WContext;
+
   return (
     <MaterialTable
       title='Current Weather'
@@ -19,10 +23,8 @@ const Current = ({ units, convertTemp, current }) => {
         search: false,
         sorting: false,
         draggable: false,
+        paging: false,
         pageSize: 10
-      }}
-      detailPanel={rowData => {
-        return <iframe width='100%' height='315' src='' frameborder='0' />;
       }}
     />
   );

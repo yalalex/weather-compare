@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useContext } from 'react';
+import wContext from '../context/wContext';
 
 import {
   Button,
@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       padding: 15,
-      marginBottom: 15
+      marginTop: 10,
+      marginBottom: 10
     },
     formButtons: {
       display: 'flex',
@@ -30,43 +31,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface SearchProps {
-  getCurrent: (data: any) => void;
-  getDaily: (data: any) => void;
-  getArchive: (data: any) => void;
-}
+const Search = () => {
+  const WContext = useContext(wContext);
+  const { getData, loading } = WContext;
 
-const Search = (props: SearchProps) => {
   const classes = useStyles();
-  const { getCurrent, getDaily, getArchive } = props;
   const [places, setPlaces] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const names = places.map((place: string) =>
       place.substring(0, place.indexOf(','))
     );
-    setLoading(true);
-    try {
-      const resCurrent = await axios.get('/api/current', { params: names });
-      getCurrent(resCurrent.data);
-    } catch (error) {
-      console.log(error);
-    }
-    // try {
-    //   const resDaily = await axios.get('/api/daily', { data });
-    //   getDaily(resDaily);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    // try {
-    //   const resArchive = await axios.get('/api/archive', { data });
-    //   getArchive(resArchive);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    setLoading(false);
+    getData(names);
   };
 
   const handleReset = () => {
@@ -102,7 +79,7 @@ const Search = (props: SearchProps) => {
           color='secondary'
           className={classes.formButton}
         >
-          Reset
+          Clear
         </Button>
       </form>
     </Paper>

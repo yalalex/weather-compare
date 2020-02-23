@@ -1,10 +1,6 @@
 import React from 'react';
 
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-
+import { Switch, FormControlLabel, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -14,13 +10,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Switcher = ({ units, switchTemp }) => {
+const Switcher = ({ switchUnits }) => {
   const [checked, setChecked] = React.useState(false);
   const classes = useStyles();
 
   const toggleChecked = () => {
     setChecked(prev => !prev);
-    switchTemp();
+    switchUnits();
   };
 
   return (

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
 import Downshift from 'downshift';
-import Paper from '@material-ui/core/Paper';
-import Chip from '@material-ui/core/Chip';
+import { Paper, Chip } from '@material-ui/core';
 
 import { cities } from '../../../lists/cities';
 
@@ -59,6 +58,7 @@ const Autocomplete = (props: AutocompleteProps) => {
         place.country.toLowerCase().includes(value.toLowerCase())
       )
         return places.push(place.name + ', ' + place.country);
+      else return null;
     });
     const fomrattedPlaces = places.map((i: string) => ({ label: i })); // add check for suggestions length
     setSuggestions(fomrattedPlaces);
