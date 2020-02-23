@@ -13,28 +13,11 @@ const app = express();
 
 connectDB();
 
-const currentRule = new schedule.RecurrenceRule();
-currentRule.minute = '0';
-const dailyRule = new schedule.RecurrenceRule();
-dailyRule.hour = '9';
-dailyRule.minute = [
-  '0',
-  '5',
-  '10',
-  '15',
-  '20',
-  '25',
-  '30',
-  '35',
-  '40',
-  '45',
-  '50',
-  '55'
-];
+getCurrent();
 
-schedule.scheduleJob(currentRule, function() {
-  getCurrent();
-});
+const dailyRule = new schedule.RecurrenceRule();
+dailyRule.hour = 8;
+dailyRule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 schedule.scheduleJob(dailyRule, function() {
   getDaily();
 });
@@ -65,9 +48,9 @@ app.get('/api/daily', async (req, res) => {
   }
 });
 
-app.get('/api/archive/:city', async (req, res) => {
+app.get('/api/archive', async (req, res) => {
   try {
-    const archive = await Archive.find({ name: req.params.city });
+    const archive = await Archive.find();
     res.json(archive);
   } catch (err) {
     console.error(err.message);

@@ -1,26 +1,21 @@
 import React, { useEffect } from 'react';
 import './App.css';
 
-import Header from './components/Header';
+import Navbar from './components/layout/Navbar/Navbar';
 import WorldMap from './components/WorldMap';
+import Search from './components/Search';
 // import Current from './components/Current';
 // import Daily from './components/Daily';
 import useSwitchUnits from './hooks/useSwitchUnits';
 
-import 'materialize-css/dist/css/materialize.min.css';
-import M from 'materialize-css/dist/js/materialize.min.js';
-
 const App = () => {
-  useEffect(() => {
-    M.AutoInit();
-  });
-
   const [units, switchUnits] = useSwitchUnits('metric');
   const { switchTemp, convertTemp } = switchUnits;
 
   return (
     <div className='App'>
-      <Header units={units} switchTemp={switchTemp} />
+      <Navbar units={units} switchTemp={switchTemp} />
+      <Search />
       <div className='container'>
         <WorldMap />
         {/* <Current units={units} convertTemp={convertTemp} />
