@@ -30,23 +30,42 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Search = () => {
-  const classes = useStyles();
+interface SearchProps {
+  getCurrent: (data: any) => void;
+  getDaily: (data: any) => void;
+  getArchive: (data: any) => void;
+}
 
+const Search = (props: SearchProps) => {
+  const classes = useStyles();
+  const { getCurrent, getDaily, getArchive } = props;
   const [places, setPlaces] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const names = places.map((place: string) =>
+      place.substring(0, place.indexOf(','))
+    );
     setLoading(true);
-    if (places.length > 0)
-      // add alert on empty array
-      try {
-        const resCurrent = await axios.get('/api/current');
-        const resDaily = await axios.get('/api/daily');
-        const resCharts = await axios.get('/api/archive');
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      const resCurrent = await axios.get('/api/current', { params: names });
+      getCurrent(resCurrent.data);
+    } catch (error) {
+      console.log(error);
+    }
+    // try {
+    //   const resDaily = await axios.get('/api/daily', { data });
+    //   getDaily(resDaily);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    // try {
+    //   const resArchive = await axios.get('/api/archive', { data });
+    //   getArchive(resArchive);
+    // } catch (error) {
+    //   console.log(error);
+    // }
     setLoading(false);
   };
 

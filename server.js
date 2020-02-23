@@ -29,32 +29,35 @@ app.use(
 );
 
 app.get('/api/current', async (req, res) => {
+  const names = Object.values(req.query);
   try {
-    const current = await Current.find();
+    const current = await Current.find({ name: names });
     res.json(current);
   } catch (err) {
     console.error(err.message);
-    res.status.send('Server Error');
+    res.status.send('Get current weather error');
   }
 });
 
 app.get('/api/daily', async (req, res) => {
+  const names = Object.values(req.query);
   try {
-    const daily = await Daily.find();
+    const daily = await Daily.find({ name: names });
     res.json(daily);
   } catch (err) {
     console.error(err.message);
-    res.status.send('Server Error');
+    res.status.send('Get daily weather error');
   }
 });
 
 app.get('/api/archive', async (req, res) => {
+  const names = Object.values(req.query);
   try {
-    const archive = await Archive.find();
+    const archive = await Archive.find({ name: names });
     res.json(archive);
   } catch (err) {
     console.error(err.message);
-    res.status.send('Server Error');
+    res.status.send('Get archived weather error');
   }
 });
 

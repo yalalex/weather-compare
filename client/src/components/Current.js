@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import MaterialTable from 'material-table';
 import Moment from 'react-moment';
 
-const Current = ({ units, convertTemp }) => {
+const Current = ({ units, convertTemp, current }) => {
   return (
     <MaterialTable
       title='Current Weather'
@@ -12,14 +12,14 @@ const Current = ({ units, convertTemp }) => {
         { title: 'Conditions', field: 'conditions' },
         { title: 'Temperature', field: 'temp' },
         { title: 'Humidity', field: 'humidity' },
-        { title: 'Wind', field: 'wind' }
+        { title: 'Wind', field: 'wind.speed' }
       ]}
       data={current}
       options={{
         search: false,
         sorting: false,
         draggable: false,
-        pageSize: rows
+        pageSize: 10
       }}
       detailPanel={rowData => {
         return <iframe width='100%' height='315' src='' frameborder='0' />;

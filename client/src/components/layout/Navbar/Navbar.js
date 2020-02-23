@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Navbar({ units, switchTemp }) {
+export default function Navbar({ units, switchUnits }) {
   const classes = useStyles();
 
   return (
@@ -30,7 +30,7 @@ export default function Navbar({ units, switchTemp }) {
           <Typography variant='h6' className={classes.title}>
             Weather compare
           </Typography>
-          <Switcher units={units} switchTemp={switchTemp} />
+          <Switcher units={units} switchTemp={switchUnits} />
         </Toolbar>
       </AppBar>
     </div>

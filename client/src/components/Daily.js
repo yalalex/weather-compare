@@ -12,7 +12,7 @@ const Daily = ({ units, convertTemp }) => {
         search: false,
         sorting: false,
         draggable: false,
-        pageSize: rows
+        pageSize: 10
       }}
       detailPanel={rowData => {
         return <iframe width='100%' height='315' src='' frameborder='0' />;
