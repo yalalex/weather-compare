@@ -16,24 +16,26 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       padding: 15,
-      marginTop: 10,
-      marginBottom: 10
+      marginTop: 7,
+      marginBottom: 7
     },
     formButtons: {
       display: 'flex',
       marginTop: 10
     },
-    formButton: {
-      width: 150,
+    submitButton: {
       marginLeft: 8,
-      marginTop: 5
+      width: 145
+    },
+    clearButton: {
+      marginLeft: 10
     }
   })
 );
 
 const Search = () => {
   const WContext = useContext(wContext);
-  const { getData, loading } = WContext;
+  const { getData, reset, loading } = WContext;
 
   const classes = useStyles();
   const [places, setPlaces] = useState<string[]>([]);
@@ -48,6 +50,7 @@ const Search = () => {
 
   const handleReset = () => {
     setPlaces([]);
+    reset();
   };
 
   return (
@@ -58,13 +61,13 @@ const Search = () => {
             setPlaces(arr);
           }}
           selectedItem={places}
-          placeholder='Enter up to 10 places to get weather for'
+          placeholder='Enter places to get weather for'
         />
         <Button
           type='submit'
           variant='contained'
           color='primary'
-          className={classes.formButton}
+          className={classes.submitButton}
           disabled={loading ? true : false}
         >
           {loading ? (
@@ -77,9 +80,9 @@ const Search = () => {
           type='reset'
           variant='contained'
           color='secondary'
-          className={classes.formButton}
+          className={classes.clearButton}
         >
-          Clear
+          Reset
         </Button>
       </form>
     </Paper>

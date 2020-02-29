@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import wContext from '../../../context/wContext';
 import Switcher from './Switcher';
 
 import { AppBar, Toolbar, Typography } from '@material-ui/core';
@@ -19,9 +18,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Navbar() {
-  const WContext = useContext(wContext);
-  const { units, switchUnits } = WContext;
-
   const classes = useStyles();
 
   return (
@@ -31,7 +27,7 @@ export default function Navbar() {
           <Typography variant='h6' className={classes.title}>
             Weather compare
           </Typography>
-          <Switcher units={units} switchUnits={switchUnits} />
+          <Switcher />
         </Toolbar>
       </AppBar>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import WContext from './wContext';
+import { cities } from '../lists/cities';
 // import {
 //   SET_CURRENT,
 //   SET_DAILY,
@@ -15,6 +16,7 @@ interface WStateProps {
 }
 
 const WState = (props: WStateProps) => {
+  const [places, setPlaces] = useState<any[]>([]);
   const [current, setCurrent] = useState<any[]>([]);
   const [daily, setDaily] = useState<any[]>([]);
   const [archive, setArchive] = useState<any[]>([]);
@@ -27,22 +29,32 @@ const WState = (props: WStateProps) => {
 
   // const convertTemp = (temp: number) => (temp * 9) / 5 + 32;
 
-  const getData = async (places: string[]) => {
+  const reset = () => {
+    setPlaces([]);
+    setCurrent([]);
+    setDaily([]);
+    setArchive([]);
+  };
+
+  const getData = async (names: string[]) => {
+    reset();
+    const a = names.map(name => cities.filter(city => city.name === name));
+    setPlaces(a.flat());
     setLoading(true);
     try {
-      const res = await axios.get('/api/current', { params: places });
+      const res = await axios.get('/api/current', { params: names });
       setCurrent(res.data);
     } catch (error) {
       console.log(error);
     }
     try {
-      const res = await axios.get('/api/daily', { params: places });
+      const res = await axios.get('/api/daily', { params: names });
       setDaily(res.data);
     } catch (error) {
       console.log(error);
     }
     try {
-      const res = await axios.get('/api/archive', { params: places });
+      const res = await axios.get('/api/archive', { params: names });
       setArchive(res.data);
     } catch (error) {
       console.log(error);
@@ -53,13 +65,15 @@ const WState = (props: WStateProps) => {
   return (
     <WContext.Provider
       value={{
+        places,
         current,
         daily,
         archive,
         units,
         loading,
         switchUnits,
-        getData
+        getData,
+        reset
       }}
     >
       {props.children}

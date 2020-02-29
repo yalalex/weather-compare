@@ -7,6 +7,7 @@ export const CLEAR_SEARCH = 'CLEAR_SEARCH';
 export const SET_LOADING = 'SET_LOADING';
 
 export interface WState {
+  places: any[];
   current: any[];
   daily: any[];
   archive: any[];
@@ -14,4 +15,5 @@ export interface WState {
   loading: boolean;
   switchUnits: () => void;
   getData: (places: string[]) => void;
+  reset: () => void;
 }

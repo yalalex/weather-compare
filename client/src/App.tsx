@@ -4,10 +4,8 @@ import './App.css';
 import Navbar from './components/layout/Navbar/Navbar';
 import WorldMap from './components/WorldMap';
 import Search from './components/Search';
-import Current from './components/Current';
-// import Daily from './components/Daily';
-
-import { Container } from '@material-ui/core';
+import Current from './components/tables/Current';
+import Daily from './components/tables/Daily';
 
 import WState from './context/WState';
 
@@ -16,12 +14,12 @@ const App = () => {
     <div className='App'>
       <WState>
         <Navbar />
-        <Container>
+        <div className='container'>
           <Search />
           <Current />
-          {/* <Daily /> */}
+          <Daily />
           <WorldMap />
-        </Container>
+        </div>
       </WState>
     </div>
   );

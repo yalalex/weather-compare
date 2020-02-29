@@ -1,10 +1,13 @@
 body {
   background-color: #f2f2f2;
-  font-family: Verdana, Arial, sans-serif;
-  font-size: 0.9rem;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
 }
 
 .map {
   height: 400px;
-  margin-top: 10px;
+  margin-top: 7px;
 }
