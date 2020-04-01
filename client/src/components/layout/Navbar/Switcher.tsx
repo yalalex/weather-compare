@@ -37,6 +37,7 @@ const Switcher = () => {
                 color='default'
               />
             }
+            label={null}
           />
         </Grid>
         <Grid item>°F</Grid>

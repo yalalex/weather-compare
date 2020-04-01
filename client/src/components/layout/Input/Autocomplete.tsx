@@ -36,13 +36,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-type AutocompleteProps = {
+interface AutocompleteProps {
   selectedItem: string[];
   placeholder: string;
   selectHandle: (value: string[]) => void;
   error?: boolean;
   helperText?: string;
-};
+}
 
 const Autocomplete = (props: AutocompleteProps) => {
   const classes = useStyles();

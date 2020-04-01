@@ -28,6 +28,14 @@ const CurrentSchema = mongoose.Schema({
   wind: {
     type: Object,
     required: true
+  },
+  sunrise: {
+    type: Number,
+    required: true
+  },
+  sunset: {
+    type: Number,
+    required: true
   }
 });
 

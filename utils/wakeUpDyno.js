@@ -2,27 +2,30 @@ const axios = require('axios');
 
 const wakeUpDyno = (url, interval = 25, callback) => {
   const milliseconds = interval * 60000;
-  setTimeout(() => {
-    try {
-      console.log(`setTimeout called.`);
-      // HTTP GET request to the dyno's url
-      axios.get(url).then(() => console.log(`Fetching ${url}.`));
-    } catch (err) {
-      // catch fetch errors
-      console.log(`Error fetching ${url}: ${err.message} 
-            Will try again in ${interval} minutes...`);
-    } finally {
+  const time = new Date();
+  const hours = time.getHours();
+  if (hours === 1 || 2 || 7 || 8 || 13 || 14 || 19 || 20)
+    setTimeout(() => {
       try {
-        callback(); // execute callback, if passed
-      } catch (e) {
-        // catch callback error
-        callback ? console.log('Callback failed: ', e.message) : null;
+        console.log(`setTimeout called.`);
+        // HTTP GET request to the dyno's url
+        axios.get(url).then(() => console.log(`Fetching ${url}.`));
+      } catch (err) {
+        // catch fetch errors
+        console.log(`Error fetching ${url}: ${err.message} 
+            Will try again in ${interval} minutes...`);
       } finally {
-        // do it all again
-        return wakeUpDyno(url, interval, callback);
+        try {
+          callback(); // execute callback, if passed
+        } catch (e) {
+          // catch callback error
+          callback ? console.log('Callback failed: ', e.message) : null;
+        } finally {
+          // do it all again
+          return wakeUpDyno(url, interval, callback);
+        }
       }
-    }
-  }, milliseconds);
+    }, milliseconds);
 };
 
 module.exports = wakeUpDyno;

@@ -12,21 +12,29 @@ const weatherBitKey = config.get('weatherBitKey');
 const cities = list.cities;
 
 exports.getCurrent = async function() {
+  const time = Date.now();
+  const lastUpdate = await Current.find()
+    .sort({ _id: -1 })
+    .limit(1);
+  if (time - lastUpdate[0].time < 270000) return;
   cities.map(async city => {
     try {
       const res = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&units=metric&APPID=${openWeatherMapKey}`
       );
-      const { main, wind, weather, timezone } = res.data,
-        { temp, humidity } = main;
+      const { main, wind, weather, timezone, sys } = res.data,
+        { temp, humidity } = main,
+        { sunrise, sunset } = sys;
       const current = {
         name: city.name,
-        time: Date.now(),
+        time,
         timezone,
         icon: weather[0].icon,
         temp,
         humidity,
-        wind
+        wind,
+        sunrise,
+        sunset
       };
       if (current.temp.toFixed() === '-0') current.temp = 0;
       await Current.findOneAndUpdate(
@@ -42,6 +50,7 @@ exports.getCurrent = async function() {
 
 exports.getDaily = async function() {
   const time = new Date();
+  const hours = time.getHours();
   const minutes = time.getMinutes();
   const places = cities.slice(minutes, minutes + 5);
   const date = Date.now();
@@ -66,19 +75,20 @@ exports.getDaily = async function() {
       const temp = forecast[0].temp.toFixed(),
         max = forecast[0].max.toFixed(),
         min = forecast[0].min.toFixed();
-      await Archive.findOneAndUpdate(
-        { name: city.name },
-        {
-          $push: {
-            data: {
-              temp,
-              max,
-              min,
-              date
+      if (hours === 8)
+        await Archive.findOneAndUpdate(
+          { name: city.name },
+          {
+            $push: {
+              data: {
+                temp,
+                max,
+                min,
+                date
+              }
             }
           }
-        }
-      );
+        );
       const daily = {
         name: city.name,
         data: forecast,
@@ -115,7 +125,9 @@ exports.getDaily = async function() {
 //       icon: '0',
 //       temp: 0,
 //       humidity: 0,
-//       wind: {}
+//       wind: {},
+//       sunrise: 0,
+//       sunset: 0
 //     });
 //     await newCurrent.save();
 //   });

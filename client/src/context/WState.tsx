@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import WContext from './wContext';
 import { cities } from '../lists/cities';
+import { Current, Daily, Archive, City } from './types';
 // import {
 //   SET_CURRENT,
 //   SET_DAILY,
@@ -16,10 +17,10 @@ interface WStateProps {
 }
 
 const WState = (props: WStateProps) => {
-  const [places, setPlaces] = useState<any[]>([]);
-  const [current, setCurrent] = useState<any[]>([]);
-  const [daily, setDaily] = useState<any[]>([]);
-  const [archive, setArchive] = useState<any[]>([]);
+  const [places, setPlaces] = useState<City[]>([]);
+  const [current, setCurrent] = useState<Current[]>([]);
+  const [daily, setDaily] = useState<Daily[]>([]);
+  const [archive, setArchive] = useState<Archive[]>([]);
   const [units, setUnits] = useState<string>('metric');
   const [loading, setLoading] = useState<boolean>(false);
 

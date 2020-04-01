@@ -1,4 +1,4 @@
-exports.cities = [
+export const cities = [
   { name: 'Minsk', country: 'Belarus', lat: 53.9, lon: 27.57 },
   { name: 'Kyiv', country: 'Ukraine', lat: 50.45, lon: 30.52 },
   { name: 'Lviv', country: 'Ukraine', lat: 49.84, lon: 24.03 },

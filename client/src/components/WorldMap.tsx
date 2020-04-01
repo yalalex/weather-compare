@@ -17,8 +17,8 @@ const WorldMap = () => {
           width='100%'
           height='100%'
         >
-          {places.map((city, i) => (
-            <Placemark key={i} defaultGeometry={[city.lat, city.lon]} />
+          {places.map(city => (
+            <Placemark key={city.name} defaultGeometry={[city.lat, city.lon]} />
           ))}
         </Map>
       </div>

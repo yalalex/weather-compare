@@ -3,6 +3,7 @@ import MaterialTable from 'material-table';
 import wContext from '../../context/wContext';
 import moment from 'moment';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { Daily as Forecast } from '../../context/types';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -28,12 +29,12 @@ const Daily = () => {
   useEffect(() => {
     if (daily.length) {
       let day = daily[0].date;
-      let arr = [{ title: 'City', field: 'name' }];
+      let arr: any = [{ title: 'City', field: 'name' }];
       for (let i = 0; i < 7; i++) {
         const item = {
-          title: moment(day).format('MM/DD'),
+          title: moment(day).format('DD/MM'),
           field: 'data[i].temp',
-          render: props => (
+          render: (props: Forecast) => (
             <div style={{ height: 55, display: 'flex', alignItems: 'center' }}>
               <img
                 alt='conditions'

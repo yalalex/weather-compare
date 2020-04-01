@@ -17,7 +17,7 @@ const Current = () => {
           title: 'Local Time',
           field: 'time',
           render: props => (
-            <Moment unix format='LT'>
+            <Moment unix format='HH:mm'>
               {offset + props.timezone + props.time / 1000}
             </Moment>
           )
@@ -34,7 +34,7 @@ const Current = () => {
           )
         },
         {
-          title: units === 'metric' ? 'Temperature, °C' : 'Temperature, °F',
+          title: units === 'metric' ? 'Temp, °C' : 'Temp, °F',
           field: 'temp',
           render: props =>
             units === 'metric'
@@ -42,7 +42,25 @@ const Current = () => {
               : ((props.temp * 9) / 5 + 32).toFixed()
         },
         { title: 'Humidity, %', field: 'humidity' },
-        { title: 'Wind, m/s', field: 'wind.speed' }
+        { title: 'Wind, m/s', field: 'wind.speed' },
+        {
+          title: 'Sunrise',
+          field: 'sunrise',
+          render: props => (
+            <Moment unix format='HH:mm'>
+              {offset + props.timezone + props.sunrise}
+            </Moment>
+          )
+        },
+        {
+          title: 'Sunset',
+          field: 'sunset',
+          render: props => (
+            <Moment unix format='HH:mm'>
+              {offset + props.timezone + props.sunset}
+            </Moment>
+          )
+        }
       ]}
       data={current}
       options={{
