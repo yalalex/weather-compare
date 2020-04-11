@@ -5,16 +5,17 @@ import moment from 'moment';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { Daily as Forecast } from '../../context/types';
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
-      marginTop: 7
+      marginTop: 7,
+      marginBottom: 7,
     },
     cell: {
       height: 55,
       display: 'flex',
-      alignItems: 'center'
-    }
+      alignItems: 'center',
+    },
   })
 );
 
@@ -32,7 +33,10 @@ const Daily = () => {
       let arr: any = [{ title: 'City', field: 'name' }];
       for (let i = 0; i < 7; i++) {
         const item = {
-          title: moment(day).format('DD/MM'),
+          title:
+            units === 'metric'
+              ? moment(day).format('DD/MM')
+              : moment(day).format('MM/DD'),
           field: 'data[i].temp',
           render: (props: Forecast) => (
             <div style={{ height: 55, display: 'flex', alignItems: 'center' }}>
@@ -51,7 +55,7 @@ const Daily = () => {
                   ((props.data[i].min * 9) / 5 + 32).toFixed() +
                   '°'}
             </div>
-          )
+          ),
         };
         arr.push(item);
         day = day + 86400000;
@@ -71,7 +75,7 @@ const Daily = () => {
           sorting: false,
           draggable: false,
           paging: false,
-          pageSize: daily.length
+          pageSize: daily.length,
         }}
       />
     </div>

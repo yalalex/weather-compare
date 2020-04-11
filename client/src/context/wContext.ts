@@ -10,6 +10,8 @@ const state = {
   loading: false,
   switchUnits: () => {},
   getData: () => {},
+  setList: () => {},
+  removePlace: () => {},
   reset: () => {}
 };
 

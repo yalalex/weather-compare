@@ -2,10 +2,8 @@ import React from 'react';
 import './App.css';
 
 import Navbar from './components/layout/Navbar/Navbar';
-import WorldMap from './components/WorldMap';
 import Search from './components/Search';
-import Current from './components/tables/Current';
-import Daily from './components/tables/Daily';
+import Data from './components/Data';
 
 import WState from './context/WState';
 
@@ -16,9 +14,7 @@ const App = () => {
         <Navbar />
         <div className='container'>
           <Search />
-          <Current />
-          <Daily />
-          <WorldMap />
+          <Data />
         </div>
       </WState>
     </div>

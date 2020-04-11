@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import WContext from './wContext';
 import { cities } from '../lists/cities';
@@ -18,11 +18,17 @@ interface WStateProps {
 
 const WState = (props: WStateProps) => {
   const [places, setPlaces] = useState<City[]>([]);
+  const [names, setNames] = useState<string[]>([]);
   const [current, setCurrent] = useState<Current[]>([]);
   const [daily, setDaily] = useState<Daily[]>([]);
   const [archive, setArchive] = useState<Archive[]>([]);
   const [units, setUnits] = useState<string>('metric');
   const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line
+  }, [names]);
 
   const switchUnits = () => {
     units === 'metric' ? setUnits('imperial') : setUnits('metric');
@@ -37,10 +43,20 @@ const WState = (props: WStateProps) => {
     setArchive([]);
   };
 
-  const getData = async (names: string[]) => {
+  const removePlace = (name: string) => {
+    const place = name.substring(0, name.indexOf(','));
+    setNames(names.filter((name) => name !== place));
+    setPlaces(places.filter((city) => city.name !== place));
+  };
+
+  const setList = (names: string[]) => {
     reset();
-    const a = names.map(name => cities.filter(city => city.name === name));
+    setNames(names);
+    const a = names.map((name) => cities.filter((city) => city.name === name));
     setPlaces(a.flat());
+  };
+
+  const getData = async () => {
     setLoading(true);
     try {
       const res = await axios.get('/api/current', { params: names });
@@ -74,7 +90,9 @@ const WState = (props: WStateProps) => {
         loading,
         switchUnits,
         getData,
-        reset
+        setList,
+        removePlace,
+        reset,
       }}
     >
       {props.children}

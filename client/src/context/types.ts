@@ -58,6 +58,8 @@ export interface WState {
   units: string;
   loading: boolean;
   switchUnits: () => void;
-  getData: (places: string[]) => void;
+  getData: () => void;
+  setList: (places: string[]) => void;
+  removePlace: (name: string) => void;
   reset: () => void;
 }
