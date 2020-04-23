@@ -64,10 +64,13 @@ const Current = () => {
         },
         { title: 'Humidity, %', field: 'humidity' },
         {
-          title: 'Wind, m/s',
+          title: units === 'metric' ? 'Wind, m/s' : 'Wind, mph',
           field: 'wind.speed',
           render: (props) =>
-            props.wind.speed.toFixed(1) + windDir(props.wind.deg),
+            units === 'metric'
+              ? props.wind.speed.toFixed(1) + windDir(props.wind.deg)
+              : (props.wind.speed * 2.23694).toFixed(1) +
+                windDir(props.wind.deg),
         },
         {
           title: 'Sunrise',

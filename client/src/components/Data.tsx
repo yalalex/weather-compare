@@ -1,6 +1,6 @@
 import React, { Fragment, useContext } from 'react';
 
-import DataMapContainer from './map/DataMapContainer';
+import MapContainer from './map/MapContainer';
 import Current from './tables/Current';
 import Daily from './tables/Daily';
 
@@ -39,7 +39,7 @@ const Data = () => {
     <Fragment>
       <Current />
       <Daily />
-      <DataMapContainer />
+      <MapContainer />
     </Fragment>
   );
 };

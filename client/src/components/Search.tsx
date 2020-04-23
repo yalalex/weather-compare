@@ -35,9 +35,9 @@ const useStyles = makeStyles((theme) =>
     listLink: {
       display: 'flex',
       margin: 'auto',
-      marginTop: 7,
-      marginRight: window.innerWidth > 800 ? 8 : '',
-      marginLeft: window.innerWidth < 800 ? 8 : '',
+      marginTop: 8,
+      marginRight: window.innerWidth >= 500 ? 8 : '',
+      marginLeft: window.innerWidth < 500 ? 8 : '',
       color: 'blue',
       textDecorationLine: 'underline',
       '&:hover': {
@@ -58,18 +58,23 @@ const Search = () => {
   const [inputE, setInputE] = useState<string>('');
   const [openList, setOpenList] = useState<boolean>(false);
 
+  const displayError = (error: string) => {
+    setInputE(error);
+    setTimeout(() => setInputE(''), 3000);
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setInputE('');
-    if (!places.length || places[0] === undefined)
-      return setInputE('Please select at least one place');
-    const names = places.map((place: string) =>
-      place.substring(0, place.indexOf(','))
+    if (!places.length) return displayError('Please select at least one place');
+    const names = places.map(
+      (place: string) => place && place.substring(0, place.indexOf(','))
     );
     setList(names);
   };
 
   const handleReset = () => {
+    setInputE('');
     setPlaces([]);
     reset();
   };

@@ -1,26 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 
 import wContext from '../../../context/wContext';
 
 import { Switch, FormControlLabel, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   switch: {
     margin: 5,
-    width: 40
-  }
+    width: 40,
+  },
 }));
 
 const Switcher = () => {
   const WContext = useContext(wContext);
   const { switchUnits } = WContext;
 
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = useState<boolean>(false);
   const classes = useStyles();
 
   const toggleChecked = () => {
-    setChecked(prev => !prev);
+    setChecked((prev) => !prev);
     switchUnits();
   };
 

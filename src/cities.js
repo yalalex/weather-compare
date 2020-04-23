@@ -24,7 +24,7 @@ exports.cities = [
   { name: 'Limassol', country: 'Cyprus', lat: 34.71, lon: 33.02 },
   { name: 'Lisbon', country: 'Portugal', lat: 38.72, lon: -9.13 },
   { name: 'London', country: 'United Kingdom', lat: 51.51, lon: -0.13 },
-  { name: 'Los Angeles', country: 'United States', lat: 34.05, lon: -118.24 },
+  { name: 'Los Angeles', country: 'United States', lat: 33.873, lon: -118.315 },
   { name: 'Los Gatos', country: 'United States', lat: 37.24, lon: -121.96 },
   { name: 'Lviv', country: 'Ukraine', lat: 49.84, lon: 24.03 },
   { name: 'Manila', country: 'Philippines', lat: 14.6, lon: 120.98 },

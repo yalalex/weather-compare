@@ -2,11 +2,11 @@ import React, { useEffect, useState, useContext } from 'react';
 import TheMap from './TheMap';
 import wContext from '../../context/wContext';
 
-const DataMapContainer = () => {
+const MapContainer = () => {
   const WContext = useContext(wContext);
   const { places } = WContext;
 
-  const [center, setCenter] = useState(0);
+  const [center, setCenter] = useState<number>(0);
 
   useEffect(() => {
     if (places.length)
@@ -18,4 +18,4 @@ const DataMapContainer = () => {
   return places.length > 0 ? <TheMap places={places} center={center} /> : null;
 };
 
-export default DataMapContainer;
+export default MapContainer;

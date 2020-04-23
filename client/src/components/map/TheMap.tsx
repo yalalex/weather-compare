@@ -1,14 +1,17 @@
 import React from 'react';
-import { YMaps, Map, Placemark } from 'react-yandex-maps';
+import { YMaps, Map } from 'react-yandex-maps';
 import { City } from '../../context/types';
+import Mark from './Mark';
 
 interface TheMapProps {
   places: City[];
   center: number;
+  active?: string;
+  onFocus?: (name: string) => void;
 }
 
 const TheMap = (props: TheMapProps) => {
-  const { places, center } = props;
+  const { places, center, onFocus, active } = props;
 
   return (
     <YMaps>
@@ -22,7 +25,12 @@ const TheMap = (props: TheMapProps) => {
           height='100%'
         >
           {places.map((city) => (
-            <Placemark key={city.name} defaultGeometry={[city.lat, city.lon]} />
+            <Mark
+              key={city.name}
+              city={city}
+              onFocus={onFocus}
+              active={active}
+            />
           ))}
         </Map>
       </div>

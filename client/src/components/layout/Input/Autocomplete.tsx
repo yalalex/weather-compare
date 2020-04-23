@@ -4,7 +4,7 @@ import Downshift from 'downshift';
 
 import { Paper, Chip } from '@material-ui/core';
 import { cities } from '../../../lists/cities';
-import { renderInput, renderSuggestion } from './Render';
+import { renderInput, renderSuggestion } from './render';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) =>
@@ -46,7 +46,7 @@ interface AutocompleteProps {
 const Autocomplete = (props: AutocompleteProps) => {
   const classes = useStyles();
 
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState<string>('');
   const [suggestions, setSuggestions] = useState<any>([]);
 
   const getSuggestions = async (value: string) => {
