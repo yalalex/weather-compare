@@ -49,14 +49,14 @@ const useStyles = makeStyles((theme) =>
 );
 
 const Search = () => {
-  const WContext = useContext(wContext);
-  const { setList, removePlace, reset } = WContext;
-
   const classes = useStyles();
+
+  const WContext = useContext(wContext);
+  const { setList, removePlace, reset, select } = WContext;
 
   const [places, setPlaces] = useState<string[]>([]);
   const [inputE, setInputE] = useState<string>('');
-  const [openList, setOpenList] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const displayError = (error: string) => {
     setInputE(error);
@@ -79,9 +79,14 @@ const Search = () => {
     reset();
   };
 
+  const setListState = (isOpen: boolean) => {
+    setIsOpen(isOpen);
+    select('');
+  };
+
   return (
     <Paper className={classes.paper}>
-      <List isOpen={openList} closeList={() => setOpenList(false)} />
+      <List isOpen={isOpen} closeList={() => setListState(false)} />
       <form onSubmit={handleSubmit} onReset={handleReset}>
         <Autocomplete
           selectHandle={(arr) => {
@@ -110,7 +115,7 @@ const Search = () => {
           >
             Reset
           </Button>
-          <div className={classes.listLink} onClick={() => setOpenList(true)}>
+          <div className={classes.listLink} onClick={() => setListState(true)}>
             <Typography variant='body2'>List of available places</Typography>
           </div>
         </div>

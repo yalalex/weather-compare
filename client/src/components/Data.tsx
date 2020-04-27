@@ -3,6 +3,7 @@ import React, { Fragment, useContext } from 'react';
 import MapContainer from './map/MapContainer';
 import Current from './tables/Current';
 import Daily from './tables/Daily';
+import DailyGraph from './graph/DailyGraph';
 
 import wContext from '../context/wContext';
 
@@ -39,6 +40,7 @@ const Data = () => {
     <Fragment>
       <Current />
       <Daily />
+      <DailyGraph />
       <MapContainer />
     </Fragment>
   );

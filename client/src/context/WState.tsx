@@ -16,27 +16,19 @@ const WState = (props: WStateProps) => {
   const [archive, setArchive] = useState<Archive[]>([]);
   const [units, setUnits] = useState<string>('metric');
   const [loading, setLoading] = useState<boolean>(false);
+  const [active, setActive] = useState<string>('');
+  const [center, setCenter] = useState<number>(0);
 
   useEffect(() => {
     getData();
+    names.length &&
+      window.innerWidth < 900 &&
+      setCenter(cities.filter((city) => city.name === names[0])[0].lon);
     // eslint-disable-next-line
   }, [names]);
 
   const switchUnits = () => {
     units === 'metric' ? setUnits('imperial') : setUnits('metric');
-  };
-
-  const reset = () => {
-    setPlaces([]);
-    setCurrent([]);
-    setDaily([]);
-    setArchive([]);
-  };
-
-  const removePlace = (name: string) => {
-    const place = name.substring(0, name.indexOf(','));
-    setNames(names.filter((name) => name !== place));
-    setPlaces(places.filter((city) => city.name !== place));
   };
 
   const setList = (names: string[]) => {
@@ -63,6 +55,28 @@ const WState = (props: WStateProps) => {
     setLoading(false);
   };
 
+  const select = (name: string) => {
+    setActive(name);
+    name &&
+      window.innerWidth < 860 &&
+      setCenter(cities.filter((city) => city.name === name)[0].lon);
+  };
+
+  const reset = () => {
+    setPlaces([]);
+    setCurrent([]);
+    setDaily([]);
+    setArchive([]);
+    setActive('');
+    setCenter(0);
+  };
+
+  const removePlace = (name: string) => {
+    const place = name.substring(0, name.indexOf(','));
+    setNames(names.filter((name) => name !== place));
+    setPlaces(places.filter((city) => city.name !== place));
+  };
+
   return (
     <WContext.Provider
       value={{
@@ -72,11 +86,14 @@ const WState = (props: WStateProps) => {
         archive,
         units,
         loading,
+        active,
+        center,
         switchUnits,
-        getData,
         setList,
-        removePlace,
+        getData,
+        select,
         reset,
+        removePlace,
       }}
     >
       {props.children}

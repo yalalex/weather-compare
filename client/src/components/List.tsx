@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import wContext from '../context/wContext';
 import TheMap from './map/TheMap';
 import { cities } from '../lists/cities';
 
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) =>
       top: theme.spacing(1),
       color: theme.palette.grey[500],
     },
-    active: { color: 'red', '&:hover': { cursor: 'pointer' } },
+    active: { color: '#f50057', '&:hover': { cursor: 'pointer' } },
     unactive: { '&:hover': { cursor: 'pointer' } },
   })
 );
@@ -41,16 +42,28 @@ const List = (props: ListProps) => {
   const classes = useStyles();
   const { isOpen, closeList } = props;
 
-  const [active, setActive] = useState('');
+  const WContext = useContext(wContext);
+  const { select, active } = WContext;
+
+  // const [blocks, setBlocks] = useState<any[]>([]);
+
+  // useEffect(() => {
+  //   console.log(window.innerWidth);
+  //   if (window.innerWidth >= 800)
+  //     setBlocks([
+  //       cities.slice(0, 20),
+  //       cities.slice(20, 40),
+  //       cities.slice(40, 60),
+  //     ]);
+  //   if (window.innerWidth < 800 && window.innerWidth >= 600)
+  //     setBlocks([cities.slice(0, 30), cities.slice(30, 60)]);
+  //   if (window.innerWidth < 600) setBlocks(cities);
+  // }, [window.innerWidth]);
 
   const blocks =
     window.innerWidth > 800
       ? [cities.slice(0, 20), cities.slice(20, 40), cities.slice(40, 60)]
       : [cities.slice(0, 30), cities.slice(30, 60)];
-
-  const onFocus = (name: string) => {
-    setActive(name);
-  };
 
   return (
     <Dialog
@@ -70,7 +83,7 @@ const List = (props: ListProps) => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <TheMap places={cities} center={0} onFocus={onFocus} active={active} />
+      <TheMap places={cities} />
       <DialogContent dividers={true}>
         <div className={classes.list}>
           {blocks.map((block, i) => (
@@ -82,7 +95,7 @@ const List = (props: ListProps) => {
                     className={
                       city.name === active ? classes.active : classes.unactive
                     }
-                    onClick={() => setActive(city.name)}
+                    onClick={() => select(city.name)}
                   >
                     {city.name + ', ' + city.country}
                   </div>

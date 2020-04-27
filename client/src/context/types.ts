@@ -1,10 +1,10 @@
-export const SET_CURRENT = 'SET_CURRENT';
-export const SET_DAILY = 'SET_DAILY';
-export const SET_ARCHIVE = 'SET_ARCHIVE';
-export const SWITCH_UNITS = 'SWITCH_UNITS';
-export const CONVERT_TEMP = 'CONVER_TEMP';
-export const CLEAR_SEARCH = 'CLEAR_SEARCH';
-export const SET_LOADING = 'SET_LOADING';
+// export const SET_CURRENT = 'SET_CURRENT';
+// export const SET_DAILY = 'SET_DAILY';
+// export const SET_ARCHIVE = 'SET_ARCHIVE';
+// export const SWITCH_UNITS = 'SWITCH_UNITS';
+// export const CONVERT_TEMP = 'CONVER_TEMP';
+// export const CLEAR_SEARCH = 'CLEAR_SEARCH';
+// export const SET_LOADING = 'SET_LOADING';
 
 export interface City {
   name: string;
@@ -57,9 +57,12 @@ export interface WState {
   archive: Archive[];
   units: string;
   loading: boolean;
+  active: string;
+  center: number;
   switchUnits: () => void;
-  getData: () => void;
   setList: (places: string[]) => void;
-  removePlace: (name: string) => void;
+  getData: () => void;
+  select: (name: string) => void;
   reset: () => void;
+  removePlace: (name: string) => void;
 }

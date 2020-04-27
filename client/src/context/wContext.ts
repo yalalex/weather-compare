@@ -8,11 +8,14 @@ const state = {
   archive: [],
   units: 'metric',
   loading: false,
+  active: '',
+  center: 0,
   switchUnits: () => {},
-  getData: () => {},
   setList: () => {},
+  getData: () => {},
+  select: () => {},
+  reset: () => {},
   removePlace: () => {},
-  reset: () => {}
 };
 
 const wContext = createContext<WState>(state);

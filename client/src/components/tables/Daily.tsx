@@ -16,21 +16,34 @@ const useStyles = makeStyles((theme) =>
       display: 'flex',
       alignItems: 'center',
     },
+    hover: {
+      '&:hover': { cursor: 'pointer' },
+    },
   })
 );
 
 const Daily = () => {
-  const WContext = useContext(wContext);
-  const { daily, units } = WContext;
-
   const classes = useStyles();
+
+  const WContext = useContext(wContext);
+  const { daily, units, select } = WContext;
 
   const [forecast, setForecast] = useState([]);
 
   useEffect(() => {
     if (daily.length) {
       let day = daily[0].date;
-      let arr: any = [{ title: 'City', field: 'name' }];
+      let arr: any = [
+        {
+          title: 'City',
+          field: 'name',
+          render: (props: { name: string }) => (
+            <div onClick={() => select(props.name)} className={classes.hover}>
+              {props.name}
+            </div>
+          ),
+        },
+      ];
       for (let i = 0; i < 7; i++) {
         const item = {
           title:
@@ -39,11 +52,11 @@ const Daily = () => {
               : moment(day).format('MM/DD'),
           field: 'data[i].temp',
           render: (props: Forecast) => (
-            <div style={{ height: 55, display: 'flex', alignItems: 'center' }}>
+            <div className={classes.cell}>
               <img
                 alt='conditions'
                 src={`https://www.weatherbit.io/static/img/icons/${props.data[i].icon}.png`}
-                style={{ width: '40px' }}
+                style={{ width: 40 }}
               />
               {units === 'metric'
                 ? props.data[i].max.toFixed() +
@@ -62,12 +75,13 @@ const Daily = () => {
       }
       setForecast(arr);
     }
+    // eslint-disable-next-line
   }, [daily, units]);
 
   return daily.length ? (
     <div className={classes.root}>
       <MaterialTable
-        title='Weekly Forecast'
+        title='Weekly Forecast Table'
         columns={forecast}
         data={daily}
         options={{

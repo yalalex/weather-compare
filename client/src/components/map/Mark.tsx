@@ -1,20 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Placemark } from 'react-yandex-maps';
+import wContext from '../../context/wContext';
 import { City } from '../../context/types';
 
 interface MarkProps {
   city: City;
-  active?: string;
-  onFocus?: (name: string) => void;
 }
 
 const Mark = (props: MarkProps) => {
-  const { city, onFocus, active } = props;
-
-  const select = (name: string) => {
-    if (onFocus) return onFocus(name);
-    else return null;
-  };
+  const { city } = props;
+  const WContext = useContext(wContext);
+  const { active, select } = WContext;
 
   return (
     <Placemark
@@ -22,7 +18,7 @@ const Mark = (props: MarkProps) => {
       onClick={() => select(city.name)}
       options={
         city.name === active
-          ? { iconColor: 'red', zIndex: 999 }
+          ? { iconColor: '#f50057', zIndex: 2 }
           : { iconColor: '#1e9aff', zIndex: 1 }
       }
     />

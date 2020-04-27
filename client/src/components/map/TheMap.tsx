@@ -1,23 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { YMaps, Map } from 'react-yandex-maps';
 import { City } from '../../context/types';
+import wContext from '../../context/wContext';
 import Mark from './Mark';
 
 interface TheMapProps {
   places: City[];
-  center: number;
-  active?: string;
-  onFocus?: (name: string) => void;
 }
 
 const TheMap = (props: TheMapProps) => {
-  const { places, center, onFocus, active } = props;
+  const { places } = props;
+  const WContext = useContext(wContext);
+  const { center } = WContext;
 
   return (
     <YMaps>
-      <div style={{ height: 400 }}>
+      <div style={{ height: 300 }}>
         <Map
-          defaultState={{
+          state={{
             center: [35, center],
             zoom: 2,
           }}
@@ -25,12 +25,7 @@ const TheMap = (props: TheMapProps) => {
           height='100%'
         >
           {places.map((city) => (
-            <Mark
-              key={city.name}
-              city={city}
-              onFocus={onFocus}
-              active={active}
-            />
+            <Mark key={city.name} city={city} />
           ))}
         </Map>
       </div>
