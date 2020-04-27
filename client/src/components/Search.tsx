@@ -36,8 +36,6 @@ const useStyles = makeStyles((theme) =>
       display: 'flex',
       margin: 'auto',
       marginTop: 8,
-      marginRight: window.innerWidth >= 500 ? 8 : '',
-      marginLeft: window.innerWidth < 500 ? 8 : '',
       color: 'blue',
       textDecorationLine: 'underline',
       '&:hover': {
@@ -52,7 +50,7 @@ const Search = () => {
   const classes = useStyles();
 
   const WContext = useContext(wContext);
-  const { setList, removePlace, reset, select } = WContext;
+  const { setList, removePlace, reset, select, screen } = WContext;
 
   const [places, setPlaces] = useState<string[]>([]);
   const [inputE, setInputE] = useState<string>('');
@@ -115,7 +113,14 @@ const Search = () => {
           >
             Reset
           </Button>
-          <div className={classes.listLink} onClick={() => setListState(true)}>
+          <div
+            className={classes.listLink}
+            style={{
+              marginRight: screen !== 'phone' ? 8 : '',
+              marginLeft: screen === 'phone' ? 8 : '',
+            }}
+            onClick={() => setListState(true)}
+          >
             <Typography variant='body2'>List of available places</Typography>
           </div>
         </div>

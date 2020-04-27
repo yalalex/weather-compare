@@ -18,11 +18,24 @@ const WState = (props: WStateProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [active, setActive] = useState<string>('');
   const [center, setCenter] = useState<number>(0);
+  const [screen, setScreen] = useState<string>('desktop');
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width >= 900) return setScreen('desktop');
+      if (width < 900 && width >= 600) return setScreen('pad');
+      if (width < 600) return setScreen('phone');
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     getData();
     names.length &&
-      window.innerWidth < 900 &&
+      screen !== 'desktop' &&
       setCenter(cities.filter((city) => city.name === names[0])[0].lon);
     // eslint-disable-next-line
   }, [names]);
@@ -34,8 +47,10 @@ const WState = (props: WStateProps) => {
   const setList = (names: string[]) => {
     reset();
     setNames(names);
-    const a = names.map((name) => cities.filter((city) => city.name === name));
-    setPlaces(a.flat());
+    const list = names.map((name) =>
+      cities.filter((city) => city.name === name)
+    );
+    setPlaces(list.flat());
   };
 
   const getData = async () => {
@@ -46,9 +61,18 @@ const WState = (props: WStateProps) => {
         axios.get('/api/daily', { params: names }),
         axios.get('/api/archive', { params: names }),
       ]);
-      setCurrent(weather[0].data);
-      setDaily(weather[1].data);
-      setArchive(weather[2].data);
+      const c = names.map((name) =>
+        weather[0].data.filter((city: City) => city.name === name)
+      );
+      const d = names.map((name) =>
+        weather[1].data.filter((city: City) => city.name === name)
+      );
+      const a = names.map((name) =>
+        weather[2].data.filter((city: City) => city.name === name)
+      );
+      setCurrent(c.flat());
+      setDaily(d.flat());
+      setArchive(a.flat());
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +82,7 @@ const WState = (props: WStateProps) => {
   const select = (name: string) => {
     setActive(name);
     name &&
-      window.innerWidth < 860 &&
+      screen !== 'desktop' &&
       setCenter(cities.filter((city) => city.name === name)[0].lon);
   };
 
@@ -88,6 +112,7 @@ const WState = (props: WStateProps) => {
         loading,
         active,
         center,
+        screen,
         switchUnits,
         setList,
         getData,

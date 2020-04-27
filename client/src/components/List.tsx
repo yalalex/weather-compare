@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import wContext from '../context/wContext';
 import TheMap from './map/TheMap';
 import { cities } from '../lists/cities';
+import { City } from '../context/types';
 
 import {
   Dialog,
@@ -33,8 +34,17 @@ const useStyles = makeStyles((theme) =>
       top: theme.spacing(1),
       color: theme.palette.grey[500],
     },
-    active: { color: '#f50057', '&:hover': { cursor: 'pointer' } },
-    unactive: { '&:hover': { cursor: 'pointer' } },
+    active: {
+      color: '#f50057',
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
+    unactive: {
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
   })
 );
 
@@ -43,27 +53,21 @@ const List = (props: ListProps) => {
   const { isOpen, closeList } = props;
 
   const WContext = useContext(wContext);
-  const { select, active } = WContext;
+  const { select, active, screen } = WContext;
 
-  // const [blocks, setBlocks] = useState<any[]>([]);
+  const [blocks, setBlocks] = useState<any[]>([]);
 
-  // useEffect(() => {
-  //   console.log(window.innerWidth);
-  //   if (window.innerWidth >= 800)
-  //     setBlocks([
-  //       cities.slice(0, 20),
-  //       cities.slice(20, 40),
-  //       cities.slice(40, 60),
-  //     ]);
-  //   if (window.innerWidth < 800 && window.innerWidth >= 600)
-  //     setBlocks([cities.slice(0, 30), cities.slice(30, 60)]);
-  //   if (window.innerWidth < 600) setBlocks(cities);
-  // }, [window.innerWidth]);
-
-  const blocks =
-    window.innerWidth > 800
-      ? [cities.slice(0, 20), cities.slice(20, 40), cities.slice(40, 60)]
-      : [cities.slice(0, 30), cities.slice(30, 60)];
+  useEffect(() => {
+    if (screen === 'desktop')
+      return setBlocks([
+        cities.slice(0, 20),
+        cities.slice(20, 40),
+        cities.slice(40, 60),
+      ]);
+    if (screen === 'pad')
+      return setBlocks([cities.slice(0, 30), cities.slice(30, 60)]);
+    if (screen === 'phone') return setBlocks([cities]);
+  }, [screen]);
 
   return (
     <Dialog
@@ -89,7 +93,7 @@ const List = (props: ListProps) => {
           {blocks.map((block, i) => (
             <div key={i}>
               <Typography variant='subtitle1'>
-                {block.map((city) => (
+                {block.map((city: City) => (
                   <div
                     key={city.name}
                     className={

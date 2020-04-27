@@ -9,18 +9,18 @@ const useStyles = makeStyles((theme) =>
   createStyles({
     paper: {
       height: 300,
-      padding: 15,
+      padding: 16,
       marginTop: 7,
       marginBottom: 7,
       overflowX: 'auto',
       overflowY: 'hidden',
     },
-    title: {
-      marginLeft: window.innerWidth >= 600 ? 10 : 5,
-    },
+    // title: {
+    //   marginLeft: window.innerWidth >= 600 ? 8 : 0,
+    // },
     graph: {
       height: 300,
-      minWidth: 400,
+      minWidth: 350,
     },
   })
 );
@@ -39,7 +39,7 @@ const DailyGraph = () => {
   const classes = useStyles();
 
   const WContext = useContext(wContext);
-  const { daily, units } = WContext;
+  const { daily, units, screen } = WContext;
 
   const [forecast, setForecast] = useState<Data[]>([]);
 
@@ -71,7 +71,10 @@ const DailyGraph = () => {
 
   return daily.length ? (
     <Paper className={classes.paper}>
-      <Typography variant='h6' className={classes.title}>
+      <Typography
+        variant='h6'
+        style={{ marginLeft: screen === 'desktop' ? 8 : 0 }}
+      >
         Weekly Forecast Graph
       </Typography>
       <div className={classes.graph}>

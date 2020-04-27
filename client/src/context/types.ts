@@ -59,6 +59,7 @@ export interface WState {
   loading: boolean;
   active: string;
   center: number;
+  screen: string;
   switchUnits: () => void;
   setList: (places: string[]) => void;
   getData: () => void;
