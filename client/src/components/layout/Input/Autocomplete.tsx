@@ -47,7 +47,7 @@ const Autocomplete = (props: AutocompleteProps) => {
   const classes = useStyles();
 
   const [inputValue, setInputValue] = useState<string>('');
-  const [suggestions, setSuggestions] = useState<any>([]);
+  const [suggestions, setSuggestions] = useState<{ label: string }[]>([]);
 
   const getSuggestions = async (value: string) => {
     const places: string[] = [];

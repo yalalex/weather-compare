@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme) =>
     paper: {
       padding: 15,
       paddingTop: 8,
-      marginTop: 7,
-      marginBottom: 7,
+      marginTop: 10,
+      marginBottom: 10,
     },
     formButtons: {
       display: 'flex',
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) =>
       display: 'flex',
       margin: 'auto',
       marginTop: 8,
-      color: 'blue',
+      color: '#3f51b5',
       textDecorationLine: 'underline',
       '&:hover': {
         cursor: 'pointer',
@@ -61,10 +61,13 @@ const Search = () => {
     setTimeout(() => setInputE(''), 3000);
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     setInputE('');
-    if (!places.length) return displayError('Please select at least one place');
+    if (!places.length)
+      return displayError(
+        'Please select at least one place from the dropdown list'
+      );
     const names = places.map(
       (place: string) => place && place.substring(0, place.indexOf(','))
     );

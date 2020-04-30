@@ -1,15 +1,16 @@
 import React, { useState, useContext, useEffect } from 'react';
-import MaterialTable from 'material-table';
 import wContext from '../../context/wContext';
+import DailyGraph from '../graph/DailyGraph';
+import MaterialTable from 'material-table';
 import moment from 'moment';
+import { Paper } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { Daily as Forecast } from '../../context/types';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
-      marginTop: 7,
-      marginBottom: 7,
+      marginTop: 10,
     },
     cell: {
       height: 55,
@@ -18,6 +19,12 @@ const useStyles = makeStyles((theme) =>
     },
     hover: {
       '&:hover': { cursor: 'pointer' },
+    },
+    graph: {
+      overflowX: 'auto',
+      overflowY: 'hidden',
+      padding: 16,
+      marginBottom: 7,
     },
   })
 );
@@ -79,9 +86,9 @@ const Daily = () => {
   }, [daily, units]);
 
   return daily.length ? (
-    <div className={classes.root}>
+    <Paper className={classes.root}>
       <MaterialTable
-        title='Weekly Forecast Table'
+        title='Weekly Forecast'
         columns={forecast}
         data={daily}
         options={{
@@ -92,7 +99,13 @@ const Daily = () => {
           pageSize: daily.length,
         }}
       />
-    </div>
+      <div
+        className={classes.graph}
+        style={{ height: 265 + daily.length * 10 }}
+      >
+        <DailyGraph />
+      </div>
+    </Paper>
   ) : null;
 };
 

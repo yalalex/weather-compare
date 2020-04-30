@@ -1,15 +1,6 @@
 import React from 'react';
 
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-
-// type InputProps = {
-//   InputProps: any;
-//   ref: string;
-//   type: string;
-//   classes: any;
-//   fullWidth: boolean;
-// };
+import { TextField, MenuItem } from '@material-ui/core';
 
 type RenderSuggestionProps = {
   suggestion: { label: string };
@@ -28,9 +19,9 @@ export const renderInput = (inputProps: any) => {
         inputRef: ref,
         classes: {
           root: classes.inputRoot,
-          input: classes.inputInput
+          input: classes.inputInput,
         },
-        ...InputProps
+        ...InputProps,
       }}
       {...other}
     />
@@ -43,7 +34,7 @@ export const renderSuggestion = (props: RenderSuggestionProps) => {
     index,
     itemProps,
     highlightedIndex,
-    selectedItem
+    selectedItem,
   } = props;
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
@@ -55,7 +46,7 @@ export const renderSuggestion = (props: RenderSuggestionProps) => {
       selected={isHighlighted}
       component='div'
       style={{
-        fontWeight: isSelected ? 500 : 400
+        fontWeight: isSelected ? 500 : 400,
       }}
     >
       {suggestion.label}

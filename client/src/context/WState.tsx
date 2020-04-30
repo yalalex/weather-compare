@@ -10,7 +10,7 @@ interface WStateProps {
 
 const WState = (props: WStateProps) => {
   const [places, setPlaces] = useState<City[]>([]);
-  const [names, setNames] = useState<any[]>([]);
+  const [names, setNames] = useState<string[]>([]);
   const [current, setCurrent] = useState<Current[]>([]);
   const [daily, setDaily] = useState<Daily[]>([]);
   const [archive, setArchive] = useState<Archive[]>([]);
@@ -18,16 +18,20 @@ const WState = (props: WStateProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [active, setActive] = useState<string>('');
   const [center, setCenter] = useState<number>(0);
-  const [screen, setScreen] = useState<string>('desktop');
+  const [screen, setScreen] = useState<string>(changeScreen());
+
+  function changeScreen() {
+    const width = window.innerWidth;
+    if (width >= 900) return 'desktop';
+    if (width < 900 && width >= 600) return 'pad';
+    if (width < 600) return 'phone';
+    return 'phone';
+  }
 
   useEffect(() => {
     const handleResize = () => {
-      const width = window.innerWidth;
-      if (width >= 900) return setScreen('desktop');
-      if (width < 900 && width >= 600) return setScreen('pad');
-      if (width < 600) return setScreen('phone');
+      setScreen(changeScreen());
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -47,10 +51,10 @@ const WState = (props: WStateProps) => {
   const setList = (names: string[]) => {
     reset();
     setNames(names);
-    const list = names.map((name) =>
-      cities.filter((city) => city.name === name)
-    );
-    setPlaces(list.flat());
+    const list = names
+      .map((name) => cities.filter((city) => city.name === name))
+      .flat();
+    setPlaces(list);
   };
 
   const getData = async () => {
@@ -61,18 +65,14 @@ const WState = (props: WStateProps) => {
         axios.get('/api/daily', { params: names }),
         axios.get('/api/archive', { params: names }),
       ]);
-      const c = names.map((name) =>
-        weather[0].data.filter((city: City) => city.name === name)
+      const [c, d, a] = weather.map((data) =>
+        names
+          .map((name) => data.data.filter((city: City) => city.name === name))
+          .flat(1)
       );
-      const d = names.map((name) =>
-        weather[1].data.filter((city: City) => city.name === name)
-      );
-      const a = names.map((name) =>
-        weather[2].data.filter((city: City) => city.name === name)
-      );
-      setCurrent(c.flat());
-      setDaily(d.flat());
-      setArchive(a.flat());
+      setCurrent(c);
+      setDaily(d);
+      setArchive(a);
     } catch (error) {
       console.log(error);
     }

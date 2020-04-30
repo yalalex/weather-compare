@@ -11,11 +11,11 @@ interface TheMapProps {
 const TheMap = (props: TheMapProps) => {
   const { places } = props;
   const WContext = useContext(wContext);
-  const { center } = WContext;
+  const { center, screen } = WContext;
 
   return (
     <YMaps>
-      <div style={{ height: 300 }}>
+      <div style={{ height: screen === 'desktop' ? 350 : 300}}>
         <Map
           state={{
             center: [35, center],

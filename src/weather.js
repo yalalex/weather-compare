@@ -11,13 +11,11 @@ const weatherBitKey = config.get('weatherBitKey');
 
 const cities = list.cities;
 
-exports.getCurrent = async function() {
+exports.getCurrent = async function () {
   const time = Date.now();
-  const lastUpdate = await Current.find()
-    .sort({ _id: -1 })
-    .limit(1);
+  const lastUpdate = await Current.find().sort({ _id: -1 }).limit(1);
   if (time - lastUpdate[0].time < 270000) return;
-  cities.map(async city => {
+  cities.map(async (city) => {
     try {
       const res = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&units=metric&APPID=${openWeatherMapKey}`
@@ -34,7 +32,7 @@ exports.getCurrent = async function() {
         humidity,
         wind,
         sunrise,
-        sunset
+        sunset,
       };
       if (current.temp.toFixed() === '-0') current.temp = 0;
       await Current.findOneAndUpdate(
@@ -48,20 +46,20 @@ exports.getCurrent = async function() {
   });
 };
 
-exports.getDaily = async function() {
+exports.getDaily = async function () {
   const time = new Date();
-  const hours = time.getHours();
   const minutes = time.getMinutes();
   const places = cities.slice(minutes, minutes + 5);
   const date = Date.now();
-  places.map(async city => {
+  const lastUpdate = await Archive.findOne({ name: places[0].name });
+  places.map(async (city) => {
     try {
       const res = await axios.get(
         `https://api.weatherbit.io/v2.0/forecast/daily?lat=${city.lat}&lon=${city.lon}&units=M&key=${weatherBitKey}`
       );
       const forecast7days = res.data.data.slice(0, 7);
       const forecast = [];
-      forecast7days.map(day => {
+      forecast7days.map((day) => {
         if (day.temp.toFixed() === '-0') day.temp = 0;
         if (day.max_temp.toFixed() === '-0') day.max_temp = 0;
         if (day.min_temp.toFixed() === '-0') day.min_temp = 0;
@@ -69,13 +67,13 @@ exports.getDaily = async function() {
           icon: day.weather.icon,
           temp: day.temp,
           max: day.max_temp,
-          min: day.min_temp
+          min: day.min_temp,
         });
       });
-      const temp = forecast[0].temp.toFixed(),
-        max = forecast[0].max.toFixed(),
-        min = forecast[0].min.toFixed();
-      if (hours === 8)
+      if (date - lastUpdate.data[lastUpdate.data.length - 1].date > 82800000) {
+        const temp = forecast[0].temp.toFixed(),
+          max = forecast[0].max.toFixed(),
+          min = forecast[0].min.toFixed();
         await Archive.findOneAndUpdate(
           { name: city.name },
           {
@@ -84,15 +82,17 @@ exports.getDaily = async function() {
                 temp,
                 max,
                 min,
-                date
-              }
-            }
+                date,
+              },
+            },
           }
         );
+      }
+
       const daily = {
         name: city.name,
         data: forecast,
-        date
+        date,
       };
       await Daily.findOneAndUpdate(
         { name: city.name },

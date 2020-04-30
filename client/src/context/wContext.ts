@@ -10,7 +10,7 @@ const state = {
   loading: false,
   active: '',
   center: 0,
-  screen: 'desktop',
+  screen: '',
   switchUnits: () => {},
   setList: () => {},
   getData: () => {},
