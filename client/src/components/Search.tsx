@@ -89,10 +89,8 @@ const Search = () => {
         closeList={() => setListState(false)}
         places={places}
         addPlace={(place: string) => {
-          const i = places.indexOf(place);
-          // const clone = [...places];
-          if (i === -1) setPlaces([...places, place]);
-          // else setPlaces(clone.splice(i, 1));
+          if (places.indexOf(place) === -1) setPlaces([...places, place]);
+          else setPlaces(places.filter((name) => name !== place));
         }}
         reset={handleReset}
       />
