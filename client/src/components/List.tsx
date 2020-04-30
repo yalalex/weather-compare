@@ -12,13 +12,17 @@ import {
   createStyles,
   IconButton,
   Typography,
+  Button,
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
 
 interface ListProps {
   isOpen: boolean;
+  places: string[];
   closeList: () => void;
+  addPlace: (place: string) => void;
+  reset: () => void;
 }
 
 const useStyles = makeStyles((theme) =>
@@ -34,13 +38,13 @@ const useStyles = makeStyles((theme) =>
       top: theme.spacing(1),
       color: theme.palette.grey[500],
     },
-    active: {
-      color: '#f50057',
-      '&:hover': {
-        cursor: 'pointer',
-      },
+    buttons: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-around',
+      width: '100%',
     },
-    unactive: {
+    entry: {
       '&:hover': {
         cursor: 'pointer',
       },
@@ -50,10 +54,10 @@ const useStyles = makeStyles((theme) =>
 
 const List = (props: ListProps) => {
   const classes = useStyles();
-  const { isOpen, closeList } = props;
+  const { isOpen, closeList, places, addPlace, reset } = props;
 
   const WContext = useContext(wContext);
-  const { select, active, screen } = WContext;
+  const { screen, setList } = WContext;
 
   const [blocks, setBlocks] = useState<any[]>([]);
 
@@ -87,7 +91,7 @@ const List = (props: ListProps) => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <TheMap places={cities} />
+      <TheMap places={cities} selected={places} addPlace={addPlace} />
       <DialogContent dividers={true}>
         <div className={classes.list}>
           {blocks.map((block, i) => (
@@ -96,10 +100,11 @@ const List = (props: ListProps) => {
                 {block.map((city: City) => (
                   <div
                     key={city.name}
-                    className={
-                      city.name === active ? classes.active : classes.unactive
-                    }
-                    onClick={() => select(city.name)}
+                    className={classes.entry}
+                    onClick={() => addPlace(city.name)}
+                    style={{
+                      color: places.includes(city.name) ? '#f50057' : '',
+                    }}
                   >
                     {city.name + ', ' + city.country}
                   </div>
@@ -109,6 +114,20 @@ const List = (props: ListProps) => {
           ))}
         </div>
       </DialogContent>
+      <div className={classes.buttons}>
+        <Button
+          disabled={places.length ? false : true}
+          onClick={() => {
+            setList(places);
+            closeList();
+          }}
+        >
+          Get Weather!
+        </Button>
+        <Button disabled={places.length ? false : true} onClick={reset}>
+          Reset
+        </Button>
+      </div>
     </Dialog>
   );
 };

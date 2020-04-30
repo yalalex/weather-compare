@@ -95,8 +95,7 @@ const WState = (props: WStateProps) => {
     setCenter(0);
   };
 
-  const removePlace = (name: string) => {
-    const place = name.substring(0, name.indexOf(','));
+  const removePlace = (place: string) => {
     setNames(names.filter((name) => name !== place));
     setPlaces(places.filter((city) => city.name !== place));
   };

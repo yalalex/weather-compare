@@ -59,7 +59,9 @@ const Autocomplete = (props: AutocompleteProps) => {
         return places.push(place.name + ', ' + place.country);
       else return null;
     });
-    const fomrattedPlaces = places.map((i: string) => ({ label: i }));
+    const fomrattedPlaces = places.map((i: string) => ({
+      label: i,
+    }));
     setSuggestions(fomrattedPlaces);
   };
 
@@ -82,7 +84,7 @@ const Autocomplete = (props: AutocompleteProps) => {
   const handleSelect = (item: string) => {
     let { selectHandle, selectedItem } = props;
     if (selectedItem.indexOf(item) === -1) {
-      selectedItem = [...selectedItem, item];
+      selectedItem = [...selectedItem, item.split(',')[0]];
       setInputValue('');
       return selectHandle(selectedItem);
     }
@@ -92,10 +94,10 @@ const Autocomplete = (props: AutocompleteProps) => {
 
   const handleDelete = (item: string) => () => {
     const { selectedItem, selectHandle, deleteItem } = props;
-    deleteItem(item);
+    deleteItem(item.split(',')[0]);
     const selectedItemClone = [...selectedItem];
 
-    selectedItemClone.splice(selectedItemClone.indexOf(item), 1);
+    selectedItemClone.splice(selectedItemClone.indexOf(item.split(',')[0]), 1);
     selectHandle(selectedItemClone);
   };
 

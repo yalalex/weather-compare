@@ -68,10 +68,7 @@ const Search = () => {
       return displayError(
         'Please select at least one place from the dropdown list'
       );
-    const names = places.map(
-      (place: string) => place && place.substring(0, place.indexOf(','))
-    );
-    setList(names);
+    setList(places);
   };
 
   const handleReset = () => {
@@ -87,7 +84,18 @@ const Search = () => {
 
   return (
     <Paper className={classes.paper}>
-      <List isOpen={isOpen} closeList={() => setListState(false)} />
+      <List
+        isOpen={isOpen}
+        closeList={() => setListState(false)}
+        places={places}
+        addPlace={(place: string) => {
+          const i = places.indexOf(place);
+          // const clone = [...places];
+          if (i === -1) setPlaces([...places, place]);
+          // else setPlaces(clone.splice(i, 1));
+        }}
+        reset={handleReset}
+      />
       <form onSubmit={handleSubmit} onReset={handleReset}>
         <Autocomplete
           selectHandle={(arr) => {

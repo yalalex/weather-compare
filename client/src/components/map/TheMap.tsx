@@ -6,16 +6,18 @@ import Mark from './Mark';
 
 interface TheMapProps {
   places: City[];
+  selected?: string[];
+  addPlace?: (place: string) => void;
 }
 
 const TheMap = (props: TheMapProps) => {
-  const { places } = props;
+  const { places, selected, addPlace } = props;
   const WContext = useContext(wContext);
   const { center, screen } = WContext;
 
   return (
     <YMaps>
-      <div style={{ height: screen === 'desktop' ? 350 : 300}}>
+      <div style={{ height: screen === 'desktop' ? 350 : 300 }}>
         <Map
           state={{
             center: [35, center],
@@ -25,7 +27,12 @@ const TheMap = (props: TheMapProps) => {
           height='100%'
         >
           {places.map((city) => (
-            <Mark key={city.name} city={city} />
+            <Mark
+              key={city.name}
+              city={city}
+              selected={selected}
+              addPlace={addPlace}
+            />
           ))}
         </Map>
       </div>
