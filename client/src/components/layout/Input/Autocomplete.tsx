@@ -83,7 +83,7 @@ const Autocomplete = (props: AutocompleteProps) => {
 
   const handleSelect = (item: string) => {
     let { selectHandle, selectedItem } = props;
-    if (selectedItem.indexOf(item) === -1) {
+    if (selectedItem.indexOf(item.split(',')[0]) === -1) {
       selectedItem = [...selectedItem, item.split(',')[0]];
       setInputValue('');
       return selectHandle(selectedItem);
