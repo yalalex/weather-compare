@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) =>
     },
     formControl: {
       minWidth: 100,
-      marginLeft: 10,
+      marginLeft: 15,
     },
   })
 );
@@ -55,11 +55,12 @@ const HistoryGraph = () => {
   const classes = useStyles();
 
   const WContext = useContext(wContext);
-  const { archive, units, screen, select } = WContext;
+  const { archive, units, screen } = WContext;
 
   const [forecast, setForecast] = useState<Data[]>([]);
+  const [selected, setSelected] = useState<Data[]>([]);
   const [period, setPeriod] = useState<number>(14);
-  const [temp, setTemp] = useState<string>('Max');
+  const [temp, setTemp] = useState<string>('Maximum');
 
   useEffect(() => {
     if (archive.length) {
@@ -86,13 +87,36 @@ const HistoryGraph = () => {
     // eslint-disable-next-line
   }, [archive, units, period, temp]);
 
+  const select = (id: string) => {
+    setForecast(
+      forecast.map((place) => {
+        if (place.id === id && place.data.length > 0) {
+          const placeClone = { ...place };
+          setSelected([...selected, placeClone]);
+          place.data = [];
+        }
+
+        if (
+          place.id === id &&
+          place.data &&
+          place.data.length === 0 &&
+          selected.length > 0
+        ) {
+          place.data = selected.filter((place) => place.id === id)[0].data;
+          setSelected(selected.filter((place) => place.id !== id));
+        }
+        return place;
+      })
+    );
+  };
+
   const selectTemp = () => {
     switch (temp) {
-      case 'Max':
+      case 'Maximum':
         return 'max';
-      case 'Avg':
+      case 'Average':
         return 'temp';
-      case 'Min':
+      case 'Minimum':
         return 'min';
       default:
         return 'max';
@@ -115,7 +139,7 @@ const HistoryGraph = () => {
   };
 
   const periods = [7, 14, 30, 60, 90];
-  const temps = ['Max', 'Avg', 'Min'];
+  const temps = ['Maximum', 'Average', 'Minimum'];
 
   return archive.length ? (
     <Paper
@@ -140,7 +164,7 @@ const HistoryGraph = () => {
                 <MenuItem key={temp} value={temp}>{`${temp}`}</MenuItem>
               ))}
             </Select>
-            <FormHelperText>Max/Avg/Min</FormHelperText>
+            <FormHelperText>Max/Avg/Min T</FormHelperText>
           </FormControl>
           <FormControl className={classes.formControl} size='small'>
             <Select

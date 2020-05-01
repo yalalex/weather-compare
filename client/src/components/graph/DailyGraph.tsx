@@ -43,10 +43,11 @@ const DailyGraph = () => {
   const classes = useStyles();
 
   const WContext = useContext(wContext);
-  const { daily, units, select } = WContext;
+  const { daily, units } = WContext;
 
   const [forecast, setForecast] = useState<Data[]>([]);
-  const [temp, setTemp] = useState<string>('Max');
+  const [selected, setSelected] = useState<Data[]>([]);
+  const [temp, setTemp] = useState<string>('Maximum');
 
   useEffect(() => {
     if (daily.length) {
@@ -71,20 +72,43 @@ const DailyGraph = () => {
     // eslint-disable-next-line
   }, [daily, units, temp]);
 
+  const select = (id: string) => {
+    setForecast(
+      forecast.map((place) => {
+        if (place.id === id && place.data.length > 0) {
+          const placeClone = { ...place };
+          setSelected([...selected, placeClone]);
+          place.data = [];
+        }
+
+        if (
+          place.id === id &&
+          place.data &&
+          place.data.length === 0 &&
+          selected.length > 0
+        ) {
+          place.data = selected.filter((place) => place.id === id)[0].data;
+          setSelected(selected.filter((place) => place.id !== id));
+        }
+        return place;
+      })
+    );
+  };
+
   const selectTemp = () => {
     switch (temp) {
-      case 'Max':
+      case 'Maximum':
         return 'max';
-      case 'Avg':
+      case 'Average':
         return 'temp';
-      case 'Min':
+      case 'Minimum':
         return 'min';
       default:
         return 'max';
     }
   };
 
-  const temps = ['Max', 'Avg', 'Min'];
+  const temps = ['Maximum', 'Average', 'Minimum'];
 
   return (
     <Fragment>
@@ -99,7 +123,7 @@ const DailyGraph = () => {
               <MenuItem key={temp} value={temp}>{`${temp}`}</MenuItem>
             ))}
           </Select>
-          <FormHelperText>Max/Avg/Min</FormHelperText>
+          <FormHelperText>Max/Avg/Min T</FormHelperText>
         </FormControl>
       </div>
       <div className={classes.graph}>
