@@ -2,7 +2,14 @@ import React, { useState, useContext, useEffect } from 'react';
 import wContext from '../../context/wContext';
 import moment from 'moment';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { Paper, Typography, Menu, MenuItem, Button } from '@material-ui/core';
+import {
+  Paper,
+  Typography,
+  MenuItem,
+  FormControl,
+  Select,
+  FormHelperText,
+} from '@material-ui/core';
 import { ResponsiveLine } from '@nivo/line';
 
 const useStyles = makeStyles((theme) =>
@@ -27,6 +34,10 @@ const useStyles = makeStyles((theme) =>
       margin: 'auto',
       marginRight: 100,
     },
+    formControl: {
+      minWidth: 100,
+      marginLeft: 10,
+    },
   })
 );
 
@@ -48,20 +59,7 @@ const HistoryGraph = () => {
 
   const [forecast, setForecast] = useState<Data[]>([]);
   const [period, setPeriod] = useState<number>(14);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const selectPeriod = (period: number) => {
-    setPeriod(period);
-    handleClose();
-  };
+  const [temp, setTemp] = useState<string>('Max');
 
   useEffect(() => {
     if (archive.length) {
@@ -76,8 +74,8 @@ const HistoryGraph = () => {
             x: moment(data[i].date).format('YYYY-MM-DD'),
             y:
               units === 'metric'
-                ? Number(data[i].temp)
-                : (Number(data[i].temp) * 9) / 5 + 32,
+                ? Number(data[i][selectTemp()])
+                : (Number(data[i][selectTemp()]) * 9) / 5 + 32,
           };
           dataItem.data.push(item);
         }
@@ -86,7 +84,20 @@ const HistoryGraph = () => {
       setForecast(data);
     }
     // eslint-disable-next-line
-  }, [archive, units, period]);
+  }, [archive, units, period, temp]);
+
+  const selectTemp = () => {
+    switch (temp) {
+      case 'Max':
+        return 'max';
+      case 'Avg':
+        return 'temp';
+      case 'Min':
+        return 'min';
+      default:
+        return 'max';
+    }
+  };
 
   const tickValue = () => {
     switch (period) {
@@ -104,6 +115,7 @@ const HistoryGraph = () => {
   };
 
   const periods = [7, 14, 30, 60, 90];
+  const temps = ['Max', 'Avg', 'Min'];
 
   return archive.length ? (
     <Paper
@@ -118,36 +130,40 @@ const HistoryGraph = () => {
           Historical Data
         </Typography>
         <div className={classes.select}>
-          <Button
-            aria-controls='simple-menu'
-            aria-haspopup='true'
-            variant='contained'
-            size='small'
-            onClick={handleClick}
-          >
-            {`Last ${period} days`}
-          </Button>
-          <Menu
-            id='simple-menu'
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            {periods.map((period) => (
-              <MenuItem
-                key={period}
-                onClick={() => selectPeriod(period)}
-              >{`Last ${period} days`}</MenuItem>
-            ))}
-          </Menu>
+          <FormControl className={classes.formControl} size='small'>
+            <Select
+              value={temp}
+              onChange={(e: any) => setTemp(e.target.value)}
+              inputProps={{ 'aria-label': 'Without label' }}
+            >
+              {temps.map((temp) => (
+                <MenuItem key={temp} value={temp}>{`${temp}`}</MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>Max/Avg/Min</FormHelperText>
+          </FormControl>
+          <FormControl className={classes.formControl} size='small'>
+            <Select
+              value={period}
+              onChange={(e: any) => setPeriod(e.target.value)}
+              inputProps={{ 'aria-label': 'Without label' }}
+            >
+              {periods.map((period) => (
+                <MenuItem
+                  key={period}
+                  value={period}
+                >{`${period} days`}</MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>Select period</FormHelperText>
+          </FormControl>
         </div>
       </div>
       <div className={classes.graph}>
         <ResponsiveLine
           data={forecast}
           curve='monotoneX'
-          margin={{ top: 30, right: 100, bottom: 95, left: 55 }}
+          margin={{ top: 30, right: 100, bottom: 103, left: 55 }}
           xScale={{ type: 'time', format: '%Y-%m-%d', precision: 'day' }}
           xFormat='time:%Y-%m-%d'
           yScale={{

@@ -57,7 +57,7 @@ const List = (props: ListProps) => {
   const { isOpen, closeList, places, addPlace, reset } = props;
 
   const WContext = useContext(wContext);
-  const { screen, setList } = WContext;
+  const { screen, setList, select } = WContext;
 
   const [blocks, setBlocks] = useState<any[]>([]);
 
@@ -101,7 +101,10 @@ const List = (props: ListProps) => {
                   <div
                     key={city.name}
                     className={classes.entry}
-                    onClick={() => addPlace(city.name)}
+                    onClick={() => {
+                      addPlace(city.name);
+                      select(city.name);
+                    }}
                     style={{
                       color: places.includes(city.name) ? '#f50057' : '',
                     }}
