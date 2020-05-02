@@ -2,21 +2,10 @@ import React, { useContext } from 'react';
 import MaterialTable from 'material-table';
 import wContext from '../../context/wContext';
 import Moment from 'react-moment';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    hover: {
-      '&:hover': { cursor: 'pointer' },
-    },
-  })
-);
 
 const Current = () => {
-  const classes = useStyles();
-
   const WContext = useContext(wContext);
-  const { current, units, select } = WContext;
+  const { current, units } = WContext;
 
   const windDir = (deg: number) => {
     if (deg === undefined) return '';
@@ -47,11 +36,6 @@ const Current = () => {
         {
           title: 'City',
           field: 'name',
-          render: (props) => (
-            <div onClick={() => select(props.name)} className={classes.hover}>
-              {props.name}
-            </div>
-          ),
         },
         {
           title: 'Local Time',
@@ -117,6 +101,7 @@ const Current = () => {
         draggable: false,
         paging: false,
         pageSize: current.length,
+        padding: 'dense',
       }}
     />
   ) : null;

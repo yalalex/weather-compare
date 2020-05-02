@@ -33,7 +33,7 @@ const Daily = () => {
   const classes = useStyles();
 
   const WContext = useContext(wContext);
-  const { daily, units, select } = WContext;
+  const { daily, units } = WContext;
 
   const [forecast, setForecast] = useState([]);
 
@@ -44,11 +44,6 @@ const Daily = () => {
         {
           title: 'City',
           field: 'name',
-          render: (props: { name: string }) => (
-            <div onClick={() => select(props.name)} className={classes.hover}>
-              {props.name}
-            </div>
-          ),
         },
       ];
       for (let i = 0; i < 7; i++) {
@@ -97,14 +92,16 @@ const Daily = () => {
           draggable: false,
           paging: false,
           pageSize: daily.length,
+          padding: 'dense',
         }}
       />
-      <div
+      <Paper
         className={classes.graph}
         style={{ height: 265 + daily.length * 10 }}
+        elevation={3}
       >
         <DailyGraph />
-      </div>
+      </Paper>
     </Paper>
   ) : null;
 };

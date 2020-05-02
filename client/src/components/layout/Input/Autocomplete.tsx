@@ -24,7 +24,9 @@ const useStyles = makeStyles((theme) =>
       left: 0,
       right: 0,
     },
-    inputRoot: { display: 'block' },
+    inputRoot: {
+      display: 'block',
+    },
     button: {
       marginTop: 5,
     },

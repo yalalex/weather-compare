@@ -50,7 +50,7 @@ const Search = () => {
   const classes = useStyles();
 
   const WContext = useContext(wContext);
-  const { setList, removePlace, reset, select, screen } = WContext;
+  const { getData, removePlace, reset, screen } = WContext;
 
   const [places, setPlaces] = useState<string[]>([]);
   const [inputE, setInputE] = useState<string>('');
@@ -68,7 +68,7 @@ const Search = () => {
       return displayError(
         'Please select at least one place from the dropdown list'
       );
-    setList(places);
+    getData(places);
   };
 
   const handleReset = () => {
@@ -77,16 +77,11 @@ const Search = () => {
     reset();
   };
 
-  const setListState = (isOpen: boolean) => {
-    setIsOpen(isOpen);
-    select('');
-  };
-
   return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={3}>
       <List
         isOpen={isOpen}
-        closeList={() => setListState(false)}
+        closeList={() => setIsOpen(false)}
         places={places}
         addPlace={(place: string) => {
           if (places.indexOf(place) === -1) setPlaces([...places, place]);
@@ -128,7 +123,7 @@ const Search = () => {
               marginRight: screen !== 'phone' ? 8 : '',
               marginLeft: screen === 'phone' ? 8 : '',
             }}
-            onClick={() => setListState(true)}
+            onClick={() => setIsOpen(true)}
           >
             <Typography variant='body2'>List of available places</Typography>
           </div>

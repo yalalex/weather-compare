@@ -10,7 +10,6 @@ interface WStateProps {
 
 const WState = (props: WStateProps) => {
   const [places, setPlaces] = useState<City[]>([]);
-  const [names, setNames] = useState<string[]>([]);
   const [current, setCurrent] = useState<Current[]>([]);
   const [daily, setDaily] = useState<Daily[]>([]);
   const [archive, setArchive] = useState<Archive[]>([]);
@@ -36,28 +35,20 @@ const WState = (props: WStateProps) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  useEffect(() => {
-    getData();
-    names.length &&
-      screen !== 'desktop' &&
-      setCenter(cities.filter((city) => city.name === names[0])[0].lon);
-    // eslint-disable-next-line
-  }, [names]);
-
   const switchUnits = () => {
     units === 'metric' ? setUnits('imperial') : setUnits('metric');
   };
 
-  const setList = (names: string[]) => {
-    reset();
-    setNames(names);
+  const getData = async (names: string[]) => {
+    setActive('');
+    setCenter(0);
     const list = names
       .map((name) => cities.filter((city) => city.name === name))
       .flat();
     setPlaces(list);
-  };
-
-  const getData = async () => {
+    names.length &&
+      screen !== 'desktop' &&
+      setCenter(cities.filter((city) => city.name === names[0])[0].lon);
     setLoading(true);
     try {
       const weather = await Promise.all([
@@ -96,7 +87,9 @@ const WState = (props: WStateProps) => {
   };
 
   const removePlace = (place: string) => {
-    setNames(names.filter((name) => name !== place));
+    setCurrent(current.filter((city) => city.name !== place));
+    setDaily(daily.filter((city) => city.name !== place));
+    setArchive(archive.filter((city) => city.name !== place));
     setPlaces(places.filter((city) => city.name !== place));
   };
 
@@ -113,7 +106,6 @@ const WState = (props: WStateProps) => {
         center,
         screen,
         switchUnits,
-        setList,
         getData,
         select,
         reset,

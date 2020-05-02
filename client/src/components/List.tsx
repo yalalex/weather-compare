@@ -57,7 +57,7 @@ const List = (props: ListProps) => {
   const { isOpen, closeList, places, addPlace, reset } = props;
 
   const WContext = useContext(wContext);
-  const { screen, setList, select } = WContext;
+  const { screen, getData, select } = WContext;
 
   const [blocks, setBlocks] = useState<any[]>([]);
 
@@ -121,7 +121,7 @@ const List = (props: ListProps) => {
         <Button
           disabled={places.length ? false : true}
           onClick={() => {
-            setList(places);
+            getData(places);
             closeList();
           }}
         >

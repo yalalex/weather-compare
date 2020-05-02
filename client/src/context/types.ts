@@ -61,8 +61,7 @@ export interface WState {
   center: number;
   screen: string;
   switchUnits: () => void;
-  setList: (places: string[]) => void;
-  getData: () => void;
+  getData: (names: string[]) => void;
   select: (name: string) => void;
   reset: () => void;
   removePlace: (name: string) => void;

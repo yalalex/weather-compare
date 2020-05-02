@@ -23,11 +23,11 @@ const useStyles = makeStyles((theme) =>
     },
     graph: {
       height: '100%',
-      minWidth: 500,
+      minWidth: 450,
     },
     title: {
       display: 'flex',
-      minWidth: 500,
+      minWidth: 450,
     },
     select: {
       display: 'flex',
@@ -94,9 +94,7 @@ const HistoryGraph = () => {
           const placeClone = { ...place };
           setSelected([...selected, placeClone]);
           place.data = [];
-        }
-
-        if (
+        } else if (
           place.id === id &&
           place.data &&
           place.data.length === 0 &&
@@ -145,13 +143,14 @@ const HistoryGraph = () => {
     <Paper
       className={classes.paper}
       style={{ height: 340 + archive.length * 10 }}
+      elevation={3}
     >
       <div className={classes.title}>
         <Typography
           variant='h6'
           style={{ marginLeft: screen !== 'phone' ? 8 : 0 }}
         >
-          Historical Data
+          History
         </Typography>
         <div className={classes.select}>
           <FormControl className={classes.formControl} size='small'>

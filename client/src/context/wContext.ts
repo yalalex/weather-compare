@@ -12,7 +12,6 @@ const state = {
   center: 0,
   screen: '',
   switchUnits: () => {},
-  setList: () => {},
   getData: () => {},
   select: () => {},
   reset: () => {},

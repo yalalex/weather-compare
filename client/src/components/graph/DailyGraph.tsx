@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme) =>
   createStyles({
     graph: {
       height: '100%',
-      minWidth: 500,
+      minWidth: 450,
     },
     select: {
-      minWidth: 400,
+      minWidth: 350,
       display: 'flex',
       justifyContent: 'flex-end',
       marginRight: 100,
@@ -81,7 +81,7 @@ const DailyGraph = () => {
           place.data = [];
         }
 
-        if (
+        else if (
           place.id === id &&
           place.data &&
           place.data.length === 0 &&
