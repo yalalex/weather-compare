@@ -50,6 +50,9 @@ const Autocomplete = (props: AutocompleteProps) => {
 
   const [inputValue, setInputValue] = useState<string>('');
   const [suggestions, setSuggestions] = useState<{ label: string }[]>([]);
+  
+  const { selectedItem: items, selectHandle, deleteItem, placeholder, error, helperText } = props;
+  let { selectedItem } = props;
 
   const getSuggestions = async (value: string) => {
     const places: string[] = [];
@@ -68,7 +71,6 @@ const Autocomplete = (props: AutocompleteProps) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    const { selectHandle, selectedItem } = props;
 
     if (selectedItem.length && !inputValue.length && e.key === 'Backspace') {
       selectHandle(selectedItem.slice(0, selectedItem.length - 1));
@@ -84,7 +86,6 @@ const Autocomplete = (props: AutocompleteProps) => {
   };
 
   const handleSelect = (item: string) => {
-    let { selectHandle, selectedItem } = props;
     if (selectedItem.indexOf(item.split(',')[0]) === -1) {
       selectedItem = [...selectedItem, item.split(',')[0]];
       setInputValue('');
@@ -95,15 +96,12 @@ const Autocomplete = (props: AutocompleteProps) => {
   };
 
   const handleDelete = (item: string) => () => {
-    const { selectedItem, selectHandle, deleteItem } = props;
     deleteItem(item.split(',')[0]);
     const selectedItemClone = [...selectedItem];
 
     selectedItemClone.splice(selectedItemClone.indexOf(item.split(',')[0]), 1);
     selectHandle(selectedItemClone);
   };
-
-  const { selectedItem: items, placeholder, error, helperText } = props;
 
   return (
     <div className={classes.root}>
