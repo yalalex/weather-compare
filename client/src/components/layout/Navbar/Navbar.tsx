@@ -18,7 +18,7 @@ export default function Navbar() {
     <AppBar position='sticky'>
       <Toolbar>
         <Typography variant='h6' className={classes.title}>
-          Weather compare
+          Compare Weather
         </Typography>
         <Switcher />
       </Toolbar>

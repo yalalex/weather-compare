@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TextField, MenuItem } from '@material-ui/core';
 
-type RenderSuggestionProps = {
+interface RenderSuggestionProps {
   suggestion: { label: string };
   index: number;
   itemProps: object;
