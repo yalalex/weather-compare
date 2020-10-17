@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import wContext from '../context/wContext';
 
 import List from './List';
@@ -56,6 +56,13 @@ const Search = () => {
   const [inputE, setInputE] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (localStorage.getItem('places') !== null) {
+      setPlaces(JSON.parse(localStorage.places));
+      getData(JSON.parse(localStorage.places));
+    };
+  }, [])
+
   const displayError = (error: string) => {
     setInputE(error);
     setTimeout(() => setInputE(''), 3000);
@@ -68,12 +75,14 @@ const Search = () => {
       return displayError(
         'Please select at least one place from the dropdown list'
       );
+    localStorage.setItem('places', JSON.stringify(places));  
     getData(places);
   };
 
   const handleReset = () => {
     setInputE('');
     setPlaces([]);
+    localStorage.removeItem('places');
     reset();
   };
 
