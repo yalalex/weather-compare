@@ -1,24 +1,24 @@
 const axios = require('axios');
-const list = require('./cities');
-const config = require('config');
+require('dotenv').config();
 
 const Current = require('../models/Current');
 const Daily = require('../models/Daily');
 const Archive = require('../models/Archive');
 
-const openWeatherMapKey = config.get('openWeatherMapKey');
-const weatherBitKey = config.get('weatherBitKey');
+const { cities } = require('./cities');
 
-const cities = list.cities;
+const OPENWEATHERMAP_API_KEY = process.env.OPENWEATHERMAP_API_KEY;
+const WEATHERBIT_API_KEY = process.env.WEATHERBIT_API_KEY;
 
 exports.getCurrent = async function () {
+  console.log('Updating current weather...');
   const time = Date.now();
   const lastUpdate = await Current.find().sort({ _id: -1 }).limit(1);
   if (time - lastUpdate[0].time < 270000) return;
   cities.map(async (city) => {
     try {
       const res = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&units=metric&APPID=${openWeatherMapKey}`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&units=metric&APPID=${OPENWEATHERMAP_API_KEY}`
       );
       const { main, wind, weather, timezone, sys } = res.data,
         { temp, humidity } = main,
@@ -47,6 +47,7 @@ exports.getCurrent = async function () {
 };
 
 exports.getDaily = async function () {
+  console.log('Updating daily forecast...');
   const time = new Date();
   const minutes = time.getMinutes();
   const places = cities.slice(minutes, minutes + 5);
@@ -55,7 +56,7 @@ exports.getDaily = async function () {
   places.map(async (city) => {
     try {
       const res = await axios.get(
-        `https://api.weatherbit.io/v2.0/forecast/daily?lat=${city.lat}&lon=${city.lon}&units=M&key=${weatherBitKey}`
+        `https://api.weatherbit.io/v2.0/forecast/daily?lat=${city.lat}&lon=${city.lon}&units=M&key=${WEATHERBIT_API_KEY}`
       );
       const forecast7days = res.data.data.slice(0, 7);
       const forecast = [];
@@ -104,31 +105,3 @@ exports.getDaily = async function () {
     }
   });
 };
-
-// exports.setBase = async function() {
-//   cities.map(async city => {
-//     const newArchive = new Archive({
-//       name: city.name,
-//       data: []
-//     });
-//     await newArchive.save();
-//     const newDaily = new Daily({
-//       name: city.name,
-//       data: [],
-//       date: Date.now()
-//     });
-//     await newDaily.save();
-//     const newCurrent = new Current({
-//       name: city.name,
-//       time: Date.now(),
-//       timezone,
-//       icon: '0',
-//       temp: 0,
-//       humidity: 0,
-//       wind: {},
-//       sunrise: 0,
-//       sunset: 0
-//     });
-//     await newCurrent.save();
-//   });
-// };
